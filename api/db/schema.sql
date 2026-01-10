@@ -21,7 +21,11 @@ CREATE TABLE IF NOT EXISTS hero_sections (
 
 -- RLS: Enable and allow public read
 ALTER TABLE hero_sections ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Hero" ON hero_sections;
 CREATE POLICY "Public Read Hero" ON hero_sections FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Hero" ON hero_sections;
 CREATE POLICY "Admin All Hero" ON hero_sections FOR ALL USING (true); -- Ideally restrict to authenticated users
 
 -- Social Links
@@ -36,7 +40,11 @@ CREATE TABLE IF NOT EXISTS social_links (
 );
 
 ALTER TABLE social_links ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Social" ON social_links;
 CREATE POLICY "Public Read Social" ON social_links FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Social" ON social_links;
 CREATE POLICY "Admin All Social" ON social_links FOR ALL USING (true);
 
 -----------------------------------------------------------------------------
@@ -52,7 +60,11 @@ CREATE TABLE IF NOT EXISTS about_sections (
 );
 
 ALTER TABLE about_sections ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read About" ON about_sections;
 CREATE POLICY "Public Read About" ON about_sections FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All About" ON about_sections;
 CREATE POLICY "Admin All About" ON about_sections FOR ALL USING (true);
 
 -- Stats
@@ -65,7 +77,11 @@ CREATE TABLE IF NOT EXISTS about_stats (
 );
 
 ALTER TABLE about_stats ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Stats" ON about_stats;
 CREATE POLICY "Public Read Stats" ON about_stats FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Stats" ON about_stats;
 CREATE POLICY "Admin All Stats" ON about_stats FOR ALL USING (true);
 
 -- Certifications
@@ -81,7 +97,11 @@ CREATE TABLE IF NOT EXISTS certifications (
 );
 
 ALTER TABLE certifications ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Certs" ON certifications;
 CREATE POLICY "Public Read Certs" ON certifications FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Certs" ON certifications;
 CREATE POLICY "Admin All Certs" ON certifications FOR ALL USING (true);
 
 -----------------------------------------------------------------------------
@@ -98,7 +118,11 @@ CREATE TABLE IF NOT EXISTS video_sections (
 );
 
 ALTER TABLE video_sections ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Video" ON video_sections;
 CREATE POLICY "Public Read Video" ON video_sections FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Video" ON video_sections;
 CREATE POLICY "Admin All Video" ON video_sections FOR ALL USING (true);
 
 -----------------------------------------------------------------------------
@@ -116,7 +140,11 @@ CREATE TABLE IF NOT EXISTS contact_items (
 );
 
 ALTER TABLE contact_items ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Contact Items" ON contact_items;
 CREATE POLICY "Public Read Contact Items" ON contact_items FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Contact Items" ON contact_items;
 CREATE POLICY "Admin All Contact Items" ON contact_items FOR ALL USING (true);
 
 -----------------------------------------------------------------------------
@@ -141,7 +169,11 @@ CREATE TABLE IF NOT EXISTS projects (
 );
 
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Projects" ON projects;
 CREATE POLICY "Public Read Projects" ON projects FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Projects" ON projects;
 CREATE POLICY "Admin All Projects" ON projects FOR ALL USING (true);
 
 -- Ensure columns exist (if table existed before without these)
@@ -167,7 +199,11 @@ CREATE TABLE IF NOT EXISTS services (
 );
 
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Services" ON services;
 CREATE POLICY "Public Read Services" ON services FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Services" ON services;
 CREATE POLICY "Admin All Services" ON services FOR ALL USING (true);
 
 -----------------------------------------------------------------------------
@@ -182,7 +218,11 @@ CREATE TABLE IF NOT EXISTS contact_sections (
 );
 
 ALTER TABLE contact_sections ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Contact Config" ON contact_sections;
 CREATE POLICY "Public Read Contact Config" ON contact_sections FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Contact Config" ON contact_sections;
 CREATE POLICY "Admin All Contact Config" ON contact_sections FOR ALL USING (true);
 
 CREATE TABLE IF NOT EXISTS services_sections (
@@ -194,7 +234,11 @@ CREATE TABLE IF NOT EXISTS services_sections (
 );
 
 ALTER TABLE services_sections ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Services Config" ON services_sections;
 CREATE POLICY "Public Read Services Config" ON services_sections FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Services Config" ON services_sections;
 CREATE POLICY "Admin All Services Config" ON services_sections FOR ALL USING (true);
 
 CREATE TABLE IF NOT EXISTS projects_sections (
@@ -206,7 +250,11 @@ CREATE TABLE IF NOT EXISTS projects_sections (
 );
 
 ALTER TABLE projects_sections ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Projects Config" ON projects_sections;
 CREATE POLICY "Public Read Projects Config" ON projects_sections FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Admin All Projects Config" ON projects_sections;
 CREATE POLICY "Admin All Projects Config" ON projects_sections FOR ALL USING (true);
 
 -----------------------------------------------------------------------------
@@ -223,7 +271,11 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Create Messages" ON messages;
 CREATE POLICY "Public Create Messages" ON messages FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Admin All Messages" ON messages;
 CREATE POLICY "Admin All Messages" ON messages FOR ALL USING (true);
 
 -----------------------------------------------------------------------------
