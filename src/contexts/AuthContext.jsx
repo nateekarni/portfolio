@@ -1,32 +1,64 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { authAPI } from '../services/api';
+import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+    const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Check authentication status on mount
+    // Check authentication status on mount and listen for changes
     useEffect(() => {
-        checkAuth();
+        // Get initial session
+        const getInitialSession = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session?.user) {
+                    setUser(session.user);
+                    setIsAuthenticated(true);
+                }
+            } catch (error) {
+                console.error('Error getting session:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        getInitialSession();
+
+        // Listen for auth state changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            async (event, session) => {
+                if (session?.user) {
+                    setUser(session.user);
+                    setIsAuthenticated(true);
+                } else {
+                    setUser(null);
+                    setIsAuthenticated(false);
+                }
+                setIsLoading(false);
+            }
+        );
+
+        return () => {
+            subscription?.unsubscribe();
+        };
     }, []);
 
-    const checkAuth = useCallback(async () => {
-        try {
-            const response = await authAPI.verify();
-            setIsAuthenticated(response.authenticated);
-        } catch (error) {
-            setIsAuthenticated(false);
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
-
-    const login = useCallback(async (token) => {
+    const login = useCallback(async (email, password) => {
         try {
             setIsLoading(true);
-            await authAPI.login(token);
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (error) {
+                return { success: false, error: error.message };
+            }
+
+            setUser(data.user);
             setIsAuthenticated(true);
             return { success: true };
         } catch (error) {
@@ -39,11 +71,18 @@ export function AuthProvider({ children }) {
     const logout = useCallback(async () => {
         try {
             setIsLoading(true);
-            await authAPI.logout();
+            const { error } = await supabase.auth.signOut();
+
+            if (error) {
+                console.error('Logout error:', error);
+            }
+
+            setUser(null);
             setIsAuthenticated(false);
             return { success: true };
         } catch (error) {
             // Even if logout fails, clear local state
+            setUser(null);
             setIsAuthenticated(false);
             return { success: false, error: error.message };
         } finally {
@@ -52,11 +91,11 @@ export function AuthProvider({ children }) {
     }, []);
 
     const value = {
+        user,
         isAuthenticated,
         isLoading,
         login,
         logout,
-        checkAuth,
     };
 
     return (

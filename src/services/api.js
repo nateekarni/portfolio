@@ -3,22 +3,40 @@
  * Handles all API calls to the backend
  */
 
+import { supabase } from '../lib/supabase';
+
 const API_BASE = '/api';
 
 /**
+ * Get current Supabase session token
+ */
+async function getAuthToken() {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token || null;
+}
+
+/**
  * Generic fetch wrapper with error handling
+ * Automatically includes Supabase auth token for authenticated requests
  */
 async function apiFetch(endpoint, options = {}) {
     const url = `${API_BASE}${endpoint}`;
 
-    const defaultOptions = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Include cookies for authentication
+    const headers = {
+        'Content-Type': 'application/json',
+        ...options.headers,
     };
 
-    const response = await fetch(url, { ...defaultOptions, ...options });
+    // Add auth token if available
+    const token = await getAuthToken();
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(url, {
+        ...options,
+        headers,
+    });
     const data = await response.json();
 
     if (!response.ok) {
@@ -27,38 +45,6 @@ async function apiFetch(endpoint, options = {}) {
 
     return data;
 }
-
-// =============================================
-// Authentication API
-// =============================================
-
-export const authAPI = {
-    /**
-     * Login with secret token
-     */
-    login: async (token) => {
-        return apiFetch('/auth/login', {
-            method: 'POST',
-            body: JSON.stringify({ token }),
-        });
-    },
-
-    /**
-     * Logout current session
-     */
-    logout: async () => {
-        return apiFetch('/auth/logout', {
-            method: 'POST',
-        });
-    },
-
-    /**
-     * Verify if current session is valid
-     */
-    verify: async () => {
-        return apiFetch('/auth/verify');
-    },
-};
 
 // =============================================
 // Services API
@@ -248,7 +234,6 @@ export const messagesAPI = {
 };
 
 export default {
-    auth: authAPI,
     services: servicesAPI,
     projects: projectsAPI,
     contact: contactAPI,

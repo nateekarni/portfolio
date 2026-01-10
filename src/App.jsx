@@ -78,7 +78,6 @@ function App() {
 
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLogin />} />
-            <Route path="/admin/:token" element={<AdminLogin />} />
 
             {/* Protected Admin Routes */}
             <Route path="/admin" element={

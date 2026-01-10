@@ -1,6 +1,5 @@
 import { supabaseAdmin } from './supabase.js';
 
-const ADMIN_SECRET_TOKEN = process.env.ADMIN_SECRET_TOKEN;
 const SESSION_COOKIE_NAME = 'admin_session';
 
 /**
@@ -19,40 +18,54 @@ export function parseCookies(cookieHeader) {
 }
 
 /**
- * Validate the secret token for initial login
+ * Verify Supabase JWT token from Authorization header
+ * Returns user object if valid, null otherwise
  */
-export function validateSecretToken(token) {
-    if (!ADMIN_SECRET_TOKEN) {
-        console.error('ADMIN_SECRET_TOKEN not configured');
-        return false;
-    }
-    return token === ADMIN_SECRET_TOKEN;
-}
+export async function verifySupabaseToken(request) {
+    const authHeader = request.headers.get('authorization');
 
-/**
- * Create a new session and return session token
- */
-export async function createSession() {
-    const sessionToken = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
-
-    const { error } = await supabaseAdmin
-        .from('admin_sessions')
-        .insert({
-            session_token: sessionToken,
-            expires_at: expiresAt.toISOString()
-        });
-
-    if (error) {
-        console.error('Error creating session:', error);
+    if (!authHeader?.startsWith('Bearer ')) {
         return null;
     }
 
-    return { sessionToken, expiresAt };
+    const token = authHeader.substring(7);
+
+    try {
+        const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
+
+        if (error || !user) {
+            console.error('Token verification failed:', error?.message);
+            return null;
+        }
+
+        return user;
+    } catch (error) {
+        console.error('Token verification error:', error);
+        return null;
+    }
 }
 
 /**
- * Validate session token from cookie
+ * Middleware to check if request is authenticated via Supabase token
+ * Returns true if authenticated, false otherwise
+ */
+export async function isAuthenticated(request) {
+    const user = await verifySupabaseToken(request);
+    return user !== null;
+}
+
+/**
+ * Get authenticated user from request
+ * Returns user object or null
+ */
+export async function getAuthenticatedUser(request) {
+    return await verifySupabaseToken(request);
+}
+
+// Legacy session functions (kept for backward compatibility during migration)
+
+/**
+ * Validate session token from cookie (legacy)
  */
 export async function validateSession(sessionToken) {
     if (!sessionToken) return false;
@@ -72,7 +85,7 @@ export async function validateSession(sessionToken) {
 }
 
 /**
- * Delete session (logout)
+ * Delete session (logout) - legacy
  */
 export async function deleteSession(sessionToken) {
     if (!sessionToken) return;
@@ -81,26 +94,6 @@ export async function deleteSession(sessionToken) {
         .from('admin_sessions')
         .delete()
         .eq('session_token', sessionToken);
-}
-
-/**
- * Middleware to check if request is authenticated
- * Returns true if authenticated, false otherwise
- */
-export async function isAuthenticated(request) {
-    const cookies = parseCookies(request.headers.get('cookie'));
-    const sessionToken = cookies[SESSION_COOKIE_NAME];
-
-    return await validateSession(sessionToken);
-}
-
-/**
- * Create session cookie string
- */
-export function createSessionCookie(sessionToken, expiresAt) {
-    const isProduction = process.env.NODE_ENV === 'production';
-
-    return `${SESSION_COOKIE_NAME}=${sessionToken}; Path=/; HttpOnly; SameSite=Strict; ${isProduction ? 'Secure; ' : ''}Expires=${expiresAt.toUTCString()}`;
 }
 
 /**

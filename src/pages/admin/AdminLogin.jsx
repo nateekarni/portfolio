@@ -1,22 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Lock, AlertCircle, Loader } from 'lucide-react';
+import { Lock, AlertCircle, Loader, Mail, Eye, EyeOff } from 'lucide-react';
 
 const AdminLogin = () => {
-    const { token } = useParams();
     const navigate = useNavigate();
     const { login, isAuthenticated, isLoading } = useAuth();
     const [error, setError] = useState(null);
-    const [manualToken, setManualToken] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
-
-    // Auto-login if token is in URL
-    useEffect(() => {
-        if (token && !isAuthenticated && !isLoading) {
-            handleLogin(token);
-        }
-    }, [token, isAuthenticated, isLoading]);
 
     // Redirect if already authenticated
     useEffect(() => {
@@ -25,34 +19,34 @@ const AdminLogin = () => {
         }
     }, [isAuthenticated, navigate]);
 
-    const handleLogin = async (tokenToUse) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!email.trim() || !password.trim()) {
+            setError('Please enter both email and password');
+            return;
+        }
+
         setIsLoggingIn(true);
         setError(null);
 
-        const result = await login(tokenToUse);
+        const result = await login(email.trim(), password);
 
         if (result.success) {
             navigate('/admin/dashboard');
         } else {
-            setError(result.error || 'Invalid token. Please try again.');
+            setError(result.error || 'Invalid credentials. Please try again.');
         }
 
         setIsLoggingIn(false);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (manualToken.trim()) {
-            handleLogin(manualToken.trim());
-        }
-    };
-
-    if (isLoading || isLoggingIn) {
+    if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
                 <div className="text-center">
                     <Loader className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-                    <p className="text-gray-500">Authenticating...</p>
+                    <p className="text-gray-500">Loading...</p>
                 </div>
             </div>
         );
@@ -67,10 +61,10 @@ const AdminLogin = () => {
                             <Lock className="w-8 h-8 text-primary" />
                         </div>
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                            Admin Access
+                            Admin Login
                         </h1>
                         <p className="text-gray-500">
-                            Enter your admin token to continue
+                            Enter your credentials to access the admin panel
                         </p>
                     </div>
 
@@ -81,36 +75,77 @@ const AdminLogin = () => {
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Admin Token
+                                Email
                             </label>
-                            <input
-                                type="password"
-                                value={manualToken}
-                                onChange={(e) => setManualToken(e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
-                                placeholder="Enter your secret token"
-                                autoComplete="off"
-                            />
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Mail className="w-5 h-5 text-gray-400" />
+                                </div>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 dark:text-white"
+                                    placeholder="admin@example.com"
+                                    autoComplete="email"
+                                    disabled={isLoggingIn}
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Password
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Lock className="w-5 h-5 text-gray-400" />
+                                </div>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 dark:text-white"
+                                    placeholder="••••••••"
+                                    autoComplete="current-password"
+                                    disabled={isLoggingIn}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                                    ) : (
+                                        <Eye className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                                    )}
+                                </button>
+                            </div>
                         </div>
 
                         <button
                             type="submit"
-                            disabled={!manualToken.trim()}
-                            className="w-full py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            disabled={isLoggingIn || !email.trim() || !password.trim()}
+                            className="w-full py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                         >
-                            Login
+                            {isLoggingIn ? (
+                                <>
+                                    <Loader className="w-5 h-5 animate-spin" />
+                                    Logging in...
+                                </>
+                            ) : (
+                                'Login'
+                            )}
                         </button>
                     </form>
 
                     <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                         <p className="text-xs text-gray-400 text-center">
-                            💡 Tip: You can also login directly via URL:<br />
-                            <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded mt-2 inline-block">
-                                /admin/YOUR-TOKEN-HERE
-                            </code>
+                            🔒 Secured with Supabase Authentication
                         </p>
                     </div>
                 </div>
