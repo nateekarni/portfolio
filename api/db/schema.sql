@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS hero_sections (
     name TEXT DEFAULT 'Your Name',
     role TEXT DEFAULT 'Full Stack Developer',
     status_text TEXT DEFAULT 'Available for work',
+    hero_image_url TEXT,
+    hero_video_url TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     CONSTRAINT single_row CHECK (id = 1)
 );
@@ -79,6 +81,35 @@ ALTER TABLE projects ADD COLUMN IF NOT EXISTS long_description TEXT;
 ALTER TABLE projects ADD COLUMN IF NOT EXISTS client_name TEXT;
 ALTER TABLE projects ADD COLUMN IF NOT EXISTS duration TEXT;
 
+-- 6. Update Hero Section (Add Image and Video URL)
+ALTER TABLE hero_sections ADD COLUMN IF NOT EXISTS hero_image_url TEXT;
+ALTER TABLE hero_sections ADD COLUMN IF NOT EXISTS hero_video_url TEXT;
+
+-- 7. New Section Config Tables (For Headers/Descriptions)
+CREATE TABLE IF NOT EXISTS contact_sections (
+    id BIGINT PRIMARY KEY DEFAULT 1,
+    title TEXT DEFAULT 'Contact Me',
+    description TEXT DEFAULT 'Get in touch',
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    CONSTRAINT single_row CHECK (id = 1)
+);
+
+CREATE TABLE IF NOT EXISTS services_sections (
+    id BIGINT PRIMARY KEY DEFAULT 1,
+    title TEXT DEFAULT 'My Services',
+    description TEXT DEFAULT 'What I offer',
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    CONSTRAINT single_row CHECK (id = 1)
+);
+
+CREATE TABLE IF NOT EXISTS projects_sections (
+    id BIGINT PRIMARY KEY DEFAULT 1,
+    title TEXT DEFAULT 'Featured Projects',
+    description TEXT DEFAULT 'Some of my best work',
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    CONSTRAINT single_row CHECK (id = 1)
+);
+
 -- Initial Seed for Single Row Tables (Upsert)
 INSERT INTO hero_sections (id, greeting, name, role, status_text)
 VALUES (1, 'Hello, I''m', 'Natee Karni', 'Full Stack Developer', 'Available for work')
@@ -90,4 +121,16 @@ ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO video_sections (id, subtitle, description)
 VALUES (1, 'Behind the Code', 'A glimpse into my development process...')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO contact_sections (id, title, description)
+VALUES (1, 'Contact Me', 'Get in touch')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO services_sections (id, title, description)
+VALUES (1, 'My Services', 'What I offer')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO projects_sections (id, title, description)
+VALUES (1, 'Featured Projects', 'Some of my best work')
 ON CONFLICT (id) DO NOTHING;

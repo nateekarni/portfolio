@@ -40,6 +40,10 @@ const ServicesManager = () => {
         is_active: true
     });
 
+    // Section Config State
+    const [configData, setConfigData] = useState({ title: '', description: '' });
+    const [configSaving, setConfigSaving] = useState(false);
+
     useEffect(() => {
         fetchServices();
     }, []);
@@ -47,8 +51,18 @@ const ServicesManager = () => {
     const fetchServices = async () => {
         try {
             setLoading(true);
-            const res = await servicesAPI.getAll({ includeInactive: true });
-            setServices(res.data || []);
+            setLoading(true);
+            const [servicesRes, configRes] = await Promise.all([
+                servicesAPI.getAll({ includeInactive: true }),
+                servicesAPI.getConfig()
+            ]);
+            setServices(servicesRes.data || []);
+            if (configRes.data) {
+                setConfigData({
+                    title: configRes.data.title || '',
+                    description: configRes.data.description || ''
+                });
+            }
         } catch (err) {
             setError(err.message);
         } finally {
@@ -230,243 +244,290 @@ const ServicesManager = () => {
                 </button>
             </div>
 
-            {/* Alerts */}
-            {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3">
-                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
-                    <span className="text-red-700 dark:text-red-400">{error}</span>
-                    <button onClick={() => setError(null)} className="ml-auto">
-                        <X size={18} className="text-red-500" />
-                    </button>
-                </div>
-            )}
-            {success && (
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-500 shrink-0" />
-                    <span className="text-green-700 dark:text-green-400">{success}</span>
-                    <button onClick={() => setSuccess(null)} className="ml-auto">
-                        <X size={18} className="text-green-500" />
-                    </button>
-                </div>
-            )}
-
-            {/* Form Modal */}
-            {showForm && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between">
-                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                                {editingId ? 'Edit Service' : 'Add New Service'}
-                            </h2>
-                            <button onClick={resetForm} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                <X size={24} />
-                            </button>
-                        </div>
-
-                        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                            {/* Basic Info */}
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Title *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={formData.title}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        placeholder="Service title"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Icon
-                                    </label>
-                                    <div
-                                        onClick={() => setShowIconPicker('main')}
-                                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 cursor-pointer hover:border-primary transition-colors"
-                                    >
-                                        {formData.icon && LucideIcons[formData.icon] ? (
-                                            <>
-                                                {(() => {
-                                                    const Icon = LucideIcons[formData.icon];
-                                                    return <Icon className="w-5 h-5 text-primary" />;
-                                                })()}
-                                                <span className="text-gray-900 dark:text-white">{formData.icon}</span>
-                                            </>
-                                        ) : (
-                                            <span className="text-gray-400">Select Icon...</span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Description
-                                </label>
-                                <textarea
-                                    rows={3}
-                                    value={formData.description}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    placeholder="Service description..."
-                                />
-                            </div>
-
-                            <div className="grid md:grid-cols-3 gap-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Category
-                                    </label>
-                                    <select
-                                        value={formData.category}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    >
-                                        <option value="main">Main Services</option>
-                                        <option value="other">Other Services</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Display Order
-                                    </label>
-                                    <input
-                                        type="number"
-                                        value={formData.display_order}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, display_order: parseInt(e.target.value) || 0 }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    />
-                                </div>
-                                <div className="flex items-center">
-                                    <label className="flex items-center gap-3 cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={formData.is_active}
-                                            onChange={(e) => setFormData(prev => ({ ...prev, is_active: e.target.checked }))}
-                                            className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
-                                        />
-                                        <span className="text-gray-700 dark:text-gray-300 font-medium">Active</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            {/* Items */}
-                            <div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Service Items
-                                    </label>
-                                    <button
-                                        type="button"
-                                        onClick={handleAddItem}
-                                        className="text-sm text-primary hover:underline flex items-center gap-1"
-                                    >
-                                        <Plus size={16} /> Add Item
-                                    </button>
-                                </div>
-                                <div className="space-y-3">
-                                    {formData.items.map((item, index) => (
-                                        <div key={index} className="flex gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                                            <input
-                                                type="text"
-                                                placeholder="Name"
-                                                value={item.name}
-                                                onChange={(e) => handleItemChange(index, 'name', e.target.value)}
-                                                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
-                                            />
-
-                                            {/* Item Icon Picker Trigger */}
-                                            <div
-                                                onClick={() => setShowIconPicker(index)}
-                                                className="w-24 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm flex items-center justify-center cursor-pointer hover:border-primary"
-                                            >
-                                                {item.icon && LucideIcons[item.icon] ? (
-                                                    (() => {
-                                                        const Icon = LucideIcons[item.icon];
-                                                        return <Icon className="w-4 h-4" title={item.icon} />;
-                                                    })()
-                                                ) : (
-                                                    <span className="text-gray-400 text-xs">Icon</span>
-                                                )}
-                                            </div>
-
-                                            <input
-                                                type="text"
-                                                placeholder="Description"
-                                                value={item.desc}
-                                                onChange={(e) => handleItemChange(index, 'desc', e.target.value)}
-                                                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemoveItem(index)}
-                                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
-                                            >
-                                                <Trash2 size={18} />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Gallery */}
-                            <div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Gallery Images
-                                    </label>
-                                    <button
-                                        type="button"
-                                        onClick={handleAddGalleryImage}
-                                        className="text-sm text-primary hover:underline flex items-center gap-1"
-                                    >
-                                        <Plus size={16} /> Add Image
-                                    </button>
-                                </div>
-                                <div className="flex flex-wrap gap-3">
-                                    {formData.gallery.map((url, index) => (
-                                        <div key={index} className="relative group">
-                                            <img
-                                                src={url}
-                                                alt={`Gallery ${index}`}
-                                                className="w-24 h-24 object-cover rounded-lg"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemoveGalleryImage(index)}
-                                                className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                            >
-                                                <X size={14} />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Submit */}
-                            <div className="flex justify-end gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-                                <button
-                                    type="button"
-                                    onClick={resetForm}
-                                    className="px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 flex items-center gap-2"
-                                >
-                                    <Save size={18} />
-                                    {editingId ? 'Update Service' : 'Create Service'}
-                                </button>
-                            </div>
-                        </form>
+            {/* Section Configuration */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Section Settings</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Title</label>
+                        <input
+                            type="text"
+                            value={configData.title}
+                            onChange={(e) => setConfigData(prev => ({ ...prev, title: e.target.value }))}
+                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Description</label>
+                        <input
+                            type="text"
+                            value={configData.description}
+                            onChange={(e) => setConfigData(prev => ({ ...prev, description: e.target.value }))}
+                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                        />
                     </div>
                 </div>
-            )}
+                <div className="flex justify-end mt-4">
+                    <button
+                        onClick={async () => {
+                            try {
+                                setConfigSaving(true);
+                                await servicesAPI.updateConfig(configData);
+                                setSuccess('Section settings updated!');
+                            } catch (err) { setError(err.message); }
+                            finally { setConfigSaving(false); }
+                        }}
+                        disabled={configSaving}
+                        className="px-4 py-2 bg-gray-900 dark:bg-gray-600 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50"
+                    >
+                        {configSaving ? 'Saving...' : 'Save Settings'}
+                    </button>
+                </div>
+            </div>
+
+            {/* Alerts */}
+            {
+                error && (
+                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                        <span className="text-red-700 dark:text-red-400">{error}</span>
+                        <button onClick={() => setError(null)} className="ml-auto">
+                            <X size={18} className="text-red-500" />
+                        </button>
+                    </div>
+                )
+            }
+            {
+                success && (
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-center gap-3">
+                        <Check className="w-5 h-5 text-green-500 shrink-0" />
+                        <span className="text-green-700 dark:text-green-400">{success}</span>
+                        <button onClick={() => setSuccess(null)} className="ml-auto">
+                            <X size={18} className="text-green-500" />
+                        </button>
+                    </div>
+                )
+            }
+
+            {/* Form Modal */}
+            {
+                showForm && (
+                    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between">
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                                    {editingId ? 'Edit Service' : 'Add New Service'}
+                                </h2>
+                                <button onClick={resetForm} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                                {/* Basic Info */}
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Title *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={formData.title}
+                                            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                            placeholder="Service title"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Icon
+                                        </label>
+                                        <div
+                                            onClick={() => setShowIconPicker('main')}
+                                            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 cursor-pointer hover:border-primary transition-colors"
+                                        >
+                                            {formData.icon && LucideIcons[formData.icon] ? (
+                                                <>
+                                                    {(() => {
+                                                        const Icon = LucideIcons[formData.icon];
+                                                        return <Icon className="w-5 h-5 text-primary" />;
+                                                    })()}
+                                                    <span className="text-gray-900 dark:text-white">{formData.icon}</span>
+                                                </>
+                                            ) : (
+                                                <span className="text-gray-400">Select Icon...</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        rows={3}
+                                        value={formData.description}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        placeholder="Service description..."
+                                    />
+                                </div>
+
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Category
+                                        </label>
+                                        <select
+                                            value={formData.category}
+                                            onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        >
+                                            <option value="main">Main Services</option>
+                                            <option value="other">Other Services</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Display Order
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={formData.display_order}
+                                            onChange={(e) => setFormData(prev => ({ ...prev, display_order: parseInt(e.target.value) || 0 }))}
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        />
+                                    </div>
+                                    <div className="flex items-center">
+                                        <label className="flex items-center gap-3 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.is_active}
+                                                onChange={(e) => setFormData(prev => ({ ...prev, is_active: e.target.checked }))}
+                                                className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                                            />
+                                            <span className="text-gray-700 dark:text-gray-300 font-medium">Active</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {/* Items */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Service Items
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={handleAddItem}
+                                            className="text-sm text-primary hover:underline flex items-center gap-1"
+                                        >
+                                            <Plus size={16} /> Add Item
+                                        </button>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {formData.items.map((item, index) => (
+                                            <div key={index} className="flex gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Name"
+                                                    value={item.name}
+                                                    onChange={(e) => handleItemChange(index, 'name', e.target.value)}
+                                                    className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
+                                                />
+
+                                                {/* Item Icon Picker Trigger */}
+                                                <div
+                                                    onClick={() => setShowIconPicker(index)}
+                                                    className="w-24 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm flex items-center justify-center cursor-pointer hover:border-primary"
+                                                >
+                                                    {item.icon && LucideIcons[item.icon] ? (
+                                                        (() => {
+                                                            const Icon = LucideIcons[item.icon];
+                                                            return <Icon className="w-4 h-4" title={item.icon} />;
+                                                        })()
+                                                    ) : (
+                                                        <span className="text-gray-400 text-xs">Icon</span>
+                                                    )}
+                                                </div>
+
+                                                <input
+                                                    type="text"
+                                                    placeholder="Description"
+                                                    value={item.desc}
+                                                    onChange={(e) => handleItemChange(index, 'desc', e.target.value)}
+                                                    className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveItem(index)}
+                                                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Gallery */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Gallery Images
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={handleAddGalleryImage}
+                                            className="text-sm text-primary hover:underline flex items-center gap-1"
+                                        >
+                                            <Plus size={16} /> Add Image
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-wrap gap-3">
+                                        {formData.gallery.map((url, index) => (
+                                            <div key={index} className="relative group">
+                                                <img
+                                                    src={url}
+                                                    alt={`Gallery ${index}`}
+                                                    className="w-24 h-24 object-cover rounded-lg"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveGalleryImage(index)}
+                                                    className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                                >
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Submit */}
+                                <div className="flex justify-end gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+                                    <button
+                                        type="button"
+                                        onClick={resetForm}
+                                        className="px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 flex items-center gap-2"
+                                    >
+                                        <Save size={18} />
+                                        {editingId ? 'Update Service' : 'Create Service'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
 
             {/* Services List */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -573,18 +634,20 @@ const ServicesManager = () => {
             </div>
 
             {/* Icon Picker Modal */}
-            {showIconPicker !== null && (
-                <IconPicker
-                    value={
-                        showIconPicker === 'main'
-                            ? formData.icon
-                            : formData.items[showIconPicker]?.icon
-                    }
-                    onChange={handleIconSelect}
-                    onClose={() => setShowIconPicker(null)}
-                />
-            )}
-        </div>
+            {
+                showIconPicker !== null && (
+                    <IconPicker
+                        value={
+                            showIconPicker === 'main'
+                                ? formData.icon
+                                : formData.items[showIconPicker]?.icon
+                        }
+                        onChange={handleIconSelect}
+                        onClose={() => setShowIconPicker(null)}
+                    />
+                )
+            }
+        </div >
     );
 };
 

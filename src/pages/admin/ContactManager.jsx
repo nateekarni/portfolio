@@ -19,6 +19,8 @@ const ContactManager = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [showIconPicker, setShowIconPicker] = useState(null);
+    const [configData, setConfigData] = useState({ title: '', description: '' });
+    const [configSaving, setConfigSaving] = useState(false);
 
     useEffect(() => {
         fetchItems();
@@ -27,8 +29,17 @@ const ContactManager = () => {
     const fetchItems = async () => {
         try {
             setLoading(true);
-            const res = await contactItemsAPI.getAll();
-            setItems(res.data || []);
+            const [itemsRes, configRes] = await Promise.all([
+                contactItemsAPI.getAll(),
+                contactItemsAPI.getConfig()
+            ]);
+            setItems(itemsRes.data || []);
+            if (configRes.data) {
+                setConfigData({
+                    title: configRes.data.title || '',
+                    description: configRes.data.description || ''
+                });
+            }
         } catch (err) {
             setError(err.message);
         } finally {
@@ -102,17 +113,62 @@ const ContactManager = () => {
                 </button>
             </div>
 
+            {/* Section Configuration */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Section Settings</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Title</label>
+                        <input
+                            type="text"
+                            value={configData.title}
+                            onChange={(e) => setConfigData(prev => ({ ...prev, title: e.target.value }))}
+                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Description</label>
+                        <input
+                            type="text"
+                            value={configData.description}
+                            onChange={(e) => setConfigData(prev => ({ ...prev, description: e.target.value }))}
+                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                        />
+                    </div>
+                </div>
+                <div className="flex justify-end mt-4">
+                    <button
+                        onClick={async () => {
+                            try {
+                                setConfigSaving(true);
+                                await contactItemsAPI.updateConfig(configData);
+                                setSuccess('Section settings updated!');
+                            } catch (err) { setError(err.message); }
+                            finally { setConfigSaving(false); }
+                        }}
+                        disabled={configSaving}
+                        className="px-4 py-2 bg-gray-900 dark:bg-gray-600 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50"
+                    >
+                        {configSaving ? 'Saving...' : 'Save Settings'}
+                    </button>
+                </div>
+            </div>
+
             {/* Alerts */}
-            {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 p-4 rounded-xl flex items-center gap-2">
-                    <AlertCircle size={20} /> {error}
-                </div>
-            )}
-            {success && (
-                <div className="bg-green-50 dark:bg-green-900/20 text-green-600 p-4 rounded-xl flex items-center gap-2">
-                    <Check size={20} /> {success}
-                </div>
-            )}
+            {
+                error && (
+                    <div className="bg-red-50 dark:bg-red-900/20 text-red-600 p-4 rounded-xl flex items-center gap-2">
+                        <AlertCircle size={20} /> {error}
+                    </div>
+                )
+            }
+            {
+                success && (
+                    <div className="bg-green-50 dark:bg-green-900/20 text-green-600 p-4 rounded-xl flex items-center gap-2">
+                        <Check size={20} /> {success}
+                    </div>
+                )
+            }
 
             <div className="space-y-3">
                 {items.length === 0 && (
@@ -170,14 +226,16 @@ const ContactManager = () => {
             </div>
 
             {/* Icon Picker Modal */}
-            {showIconPicker !== null && (
-                <IconPicker
-                    value={items[showIconPicker].icon}
-                    onChange={(iconName) => handleUpdateItem(showIconPicker, 'icon', iconName)}
-                    onClose={() => setShowIconPicker(null)}
-                />
-            )}
-        </div>
+            {
+                showIconPicker !== null && (
+                    <IconPicker
+                        value={items[showIconPicker].icon}
+                        onChange={(iconName) => handleUpdateItem(showIconPicker, 'icon', iconName)}
+                        onClose={() => setShowIconPicker(null)}
+                    />
+                )
+            }
+        </div >
     );
 };
 

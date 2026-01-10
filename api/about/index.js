@@ -35,7 +35,7 @@ export default async function handler(request) {
                 success: true,
                 data: {
                     ...(aboutData || {}),
-                    about_stats: stats || [],
+                    stats: stats || [],
                     certifications: certs || []
                 }
             });

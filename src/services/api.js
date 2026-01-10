@@ -63,6 +63,9 @@ export const servicesAPI = {
         return apiFetch(`/services${query}`);
     },
 
+    getConfig: async () => apiFetch('/services/config'),
+    updateConfig: async (data) => apiFetch('/services/config', { method: 'PUT', body: JSON.stringify(data) }),
+
     /**
      * Get single service by ID
      */
@@ -119,6 +122,9 @@ export const projectsAPI = {
         return apiFetch(`/projects${query}`);
     },
 
+    getConfig: async () => apiFetch('/projects/config'),
+    updateConfig: async (data) => apiFetch('/projects/config', { method: 'PUT', body: JSON.stringify(data) }),
+
     /**
      * Get single project by ID
      */
@@ -167,6 +173,9 @@ export const contactAPI = {
     getInfo: async () => {
         return apiFetch('/contact/info');
     },
+
+    getConfig: async () => apiFetch('/contact/config'),
+    updateConfig: async (data) => apiFetch('/contact/config', { method: 'PUT', body: JSON.stringify(data) }),
 
     /**
      * Update contact info (requires auth)
@@ -251,6 +260,8 @@ export const videoAPI = {
 
 export const contactItemsAPI = {
     getAll: async () => apiFetch('/contact/items'),
+    getConfig: async () => apiFetch('/contact/config'),
+    updateConfig: async (data) => apiFetch('/contact/config', { method: 'PUT', body: JSON.stringify(data) }),
     add: async (data) => apiFetch('/contact/items', { method: 'POST', body: JSON.stringify(data) }),
     update: async (id, data) => apiFetch(`/contact/items/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
     delete: async (id) => apiFetch(`/contact/items/${id}`, { method: 'DELETE' }),

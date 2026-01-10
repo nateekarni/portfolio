@@ -31,7 +31,16 @@ const Projects = () => {
         };
 
         fetchProjects();
+        fetchConfig();
     }, []);
+
+    const [sectionConfig, setSectionConfig] = useState(null);
+    const fetchConfig = async () => {
+        try {
+            const res = await projectsAPI.getConfig();
+            if (res.data) setSectionConfig(res.data);
+        } catch (e) { console.error(e); }
+    };
 
     // Use API data if available, otherwise use static data
     const projects = apiProjects || projectsData;
@@ -48,10 +57,10 @@ const Projects = () => {
                     className="mb-8"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                        <span className="gradient-text">{t('projects.title')}</span>
+                        <span className="gradient-text">{sectionConfig?.title || t('projects.title')}</span>
                     </h2>
                     <p className="text-secondary max-w-xl text-lg">
-                        {t('projects.subtitle')}
+                        {sectionConfig?.description || t('projects.subtitle')}
                     </p>
                 </motion.div>
 

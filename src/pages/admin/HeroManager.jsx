@@ -25,6 +25,8 @@ const HeroManager = () => {
         name: '',
         role: '',
         status_text: '',
+        hero_image_url: '',
+        hero_video_url: '',
         social_links: []
     });
 
@@ -55,7 +57,8 @@ const HeroManager = () => {
                 greeting: heroData.greeting,
                 name: heroData.name,
                 role: heroData.role,
-                status_text: heroData.status_text
+                status_text: heroData.status_text,
+                hero_image_url: heroData.hero_image_url
             });
             setSuccess('Hero section updated successfully!');
         } catch (err) {
@@ -174,6 +177,30 @@ const HeroManager = () => {
                                 onChange={e => setHeroData(prev => ({ ...prev, status_text: e.target.value }))}
                                 className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
                             />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Hero Image URL</label>
+                        <div className="flex gap-4 items-start">
+                            <div className="flex-1">
+                                <input
+                                    type="text"
+                                    value={heroData.hero_image_url || ''}
+                                    onChange={e => setHeroData(prev => ({ ...prev, hero_image_url: e.target.value }))}
+                                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 font-mono text-sm text-gray-500"
+                                    placeholder="https://example.com/me.jpg"
+                                />
+                                <p className="text-xs text-gray-400 mt-1">Leave empty to use default image.</p>
+                            </div>
+                            <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 flex-shrink-0">
+                                {heroData.hero_image_url ? (
+                                    <img src={heroData.hero_image_url} alt="Preview" className="w-full h-full object-cover" />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                        <ImageIcon size={20} />
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                     <div className="flex justify-end pt-4">

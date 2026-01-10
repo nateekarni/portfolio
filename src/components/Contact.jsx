@@ -29,7 +29,16 @@ const Contact = () => {
     };
 
     fetchContactItems();
+    fetchConfig();
   }, []);
+
+  const [sectionConfig, setSectionConfig] = useState(null);
+  const fetchConfig = async () => {
+    try {
+      const res = await contactAPI.getConfig();
+      if (res.data) setSectionConfig(res.data);
+    } catch (e) { console.error(e); }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,10 +77,10 @@ const Contact = () => {
             className='glass-panel p-8 rounded-3xl'
           >
             <h2 className='text-4xl md:text-5xl font-bold mb-8'>
-              <span className='gradient-text'>{t('contact.title')}</span>
+              <span className='gradient-text'>{sectionConfig?.title || t('contact.title')}</span>
             </h2>
             <p className='text-xl text-secondary mb-12 leading-relaxed'>
-              {t('contact.description')}
+              {sectionConfig?.description || t('contact.description')}
             </p>
 
             <div className='space-y-8'>

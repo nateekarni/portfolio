@@ -103,10 +103,29 @@ const Hero = () => {
               <div className='absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-full blur-3xl animate-pulse'></div>
               <div className='relative h-full w-full rounded-[2rem] overflow-hidden glass-panel border border-black/5 dark:border-white/10 p-2'>
                 <img
-                  src='https://images.unsplash.com/photo-1544256306-234edc1c306d?q=80&w=2609&auto=format&fit=crop'
+                  src={heroData?.hero_image_url || 'https://images.unsplash.com/photo-1544256306-234edc1c306d?q=80&w=2609&auto=format&fit=crop'}
                   alt='Hero'
                   className='w-full h-full object-cover rounded-[1.5rem] opacity-90'
                 />
+
+                {/* Mini Video Overlay */}
+                {heroData?.hero_video_url && (
+                  <div className="absolute bottom-4 -left-4 w-48 aspect-video rounded-xl overflow-hidden shadow-2xl border-2 border-white/20 z-20 group cursor-pointer hover:scale-105 transition-transform bg-black">
+                    <video
+                      src={heroData.hero_video_url}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
+                        <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-white border-b-[5px] border-b-transparent ml-1"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>

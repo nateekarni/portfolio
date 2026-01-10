@@ -59,6 +59,7 @@ const Services = () => {
               ...item,
               icon: getIcon(item.icon)
             }))
+
           })));
         }
       } catch (error) {
@@ -69,7 +70,16 @@ const Services = () => {
     };
 
     fetchServices();
+    fetchConfig();
   }, []);
+
+  const [sectionConfig, setSectionConfig] = useState(null);
+  const fetchConfig = async () => {
+    try {
+      const res = await servicesAPI.getConfig();
+      if (res.data) setSectionConfig(res.data);
+    } catch (e) { console.error(e); }
+  };
 
   useEffect(() => {
     if (selectedService?.gallery?.length > 0) {
@@ -267,10 +277,10 @@ const Services = () => {
           className="mb-8 text-center"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">{t('services.title')}</span>
+            <span className="gradient-text">{sectionConfig?.title || t('services.title')}</span>
           </h2>
           <p className="text-secondary max-w-xl mx-auto text-lg">
-            {t('services.subtitle')}
+            {sectionConfig?.description || t('services.subtitle')}
           </p>
         </motion.div>
 
