@@ -200,6 +200,38 @@ const ServicesManager = () => {
         }));
     };
 
+    const handleAddPricingFeature = (priceIndex) => {
+        setFormData(prev => {
+            const newPricing = [...prev.pricing];
+            newPricing[priceIndex] = {
+                ...newPricing[priceIndex],
+                features: [...(newPricing[priceIndex].features || []), '']
+            };
+            return { ...prev, pricing: newPricing };
+        });
+    };
+
+    const handlePricingFeatureChange = (priceIndex, featureIndex, value) => {
+        setFormData(prev => {
+            const newPricing = [...prev.pricing];
+            const newFeatures = [...newPricing[priceIndex].features];
+            newFeatures[featureIndex] = value;
+            newPricing[priceIndex] = { ...newPricing[priceIndex], features: newFeatures };
+            return { ...prev, pricing: newPricing };
+        });
+    };
+
+    const handleRemovePricingFeature = (priceIndex, featureIndex) => {
+         setFormData(prev => {
+            const newPricing = [...prev.pricing];
+            newPricing[priceIndex] = {
+                ...newPricing[priceIndex],
+                features: newPricing[priceIndex].features.filter((_, i) => i !== featureIndex)
+            };
+            return { ...prev, pricing: newPricing };
+        });
+    };
+
     const handleAddGalleryImage = () => {
         const url = prompt('Enter image URL:');
         if (url) {
@@ -478,6 +510,83 @@ const ServicesManager = () => {
                                                 >
                                                     <Trash2 size={18} />
                                                 </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Pricing */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <label className="block text-sm font-medium text-text-secondary">
+                                            Pricing Options
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={handleAddPricing}
+                                            className="text-sm text-primary hover:underline flex items-center gap-1 cursor-pointer"
+                                        >
+                                            <Plus size={16} /> Add Plan
+                                        </button>
+                                    </div>
+                                    <div className="space-y-4">
+                                        {formData.pricing.map((plan, index) => (
+                                            <div key={index} className="p-4 bg-bg-secondary rounded-xl border border-border space-y-4">
+                                                <div className="flex gap-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Plan Name (e.g. Basic)"
+                                                        value={plan.name}
+                                                        onChange={(e) => handlePricingChange(index, 'name', e.target.value)}
+                                                        className="flex-1 px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-primary text-sm outline-none focus:border-primary"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Price (e.g. $999)"
+                                                        value={plan.price}
+                                                        onChange={(e) => handlePricingChange(index, 'price', e.target.value)}
+                                                        className="w-32 px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-primary text-sm outline-none focus:border-primary"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleRemovePricing(index)}
+                                                        className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg cursor-pointer"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
+                                                
+                                                {/* Features */}
+                                                <div>
+                                                    <label className="text-xs text-text-secondary mb-2 block">Features</label>
+                                                    <div className="space-y-2 pl-4 border-l-2 border-border">
+                                                        {(plan.features || []).map((feature, fIndex) => (
+                                                            <div key={fIndex} className="flex gap-2">
+                                                                <input
+                                                                    type="text"
+                                                                    value={feature}
+                                                                    onChange={(e) => handlePricingFeatureChange(index, fIndex, e.target.value)}
+                                                                    className="flex-1 px-3 py-1.5 rounded-lg border border-border bg-bg-surface text-text-primary text-sm outline-none focus:border-primary"
+                                                                    placeholder="Feature description"
+                                                                />
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemovePricingFeature(index, fIndex)}
+                                                                    className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg cursor-pointer"
+                                                                >
+                                                                    <X size={14} />
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleAddPricingFeature(index)}
+                                                            className="text-xs text-primary hover:underline flex items-center gap-1 cursor-pointer mt-2"
+                                                        >
+                                                            <Plus size={12} /> Add Feature
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
