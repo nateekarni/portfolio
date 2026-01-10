@@ -205,6 +205,61 @@ export const contactAPI = {
 // Messages API
 // =============================================
 
+// =============================================
+// Hero API
+// =============================================
+
+export const heroAPI = {
+    get: async () => apiFetch('/hero'),
+    update: async (data) => apiFetch('/hero', { method: 'PUT', body: JSON.stringify(data) }),
+    addSocialLink: async (data) => apiFetch('/hero/social', { method: 'POST', body: JSON.stringify(data) }),
+    updateSocialLink: async (id, data) => apiFetch(`/hero/social/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deleteSocialLink: async (id) => apiFetch(`/hero/social/${id}`, { method: 'DELETE' }),
+};
+
+// =============================================
+// About API
+// =============================================
+
+export const aboutAPI = {
+    get: async () => apiFetch('/about'),
+    update: async (data) => apiFetch('/about', { method: 'PUT', body: JSON.stringify(data) }),
+
+    // Stats
+    addStat: async (data) => apiFetch('/about/stats', { method: 'POST', body: JSON.stringify(data) }),
+    updateStat: async (id, data) => apiFetch(`/about/stats/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deleteStat: async (id) => apiFetch(`/about/stats/${id}`, { method: 'DELETE' }),
+
+    // Certifications
+    addCert: async (data) => apiFetch('/about/certs', { method: 'POST', body: JSON.stringify(data) }),
+    updateCert: async (id, data) => apiFetch(`/about/certs/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deleteCert: async (id) => apiFetch(`/about/certs/${id}`, { method: 'DELETE' }),
+};
+
+// =============================================
+// Video API
+// =============================================
+
+export const videoAPI = {
+    get: async () => apiFetch('/video'),
+    update: async (data) => apiFetch('/video', { method: 'PUT', body: JSON.stringify(data) }),
+};
+
+// =============================================
+// Contact Items API (New dynamic list)
+// =============================================
+
+export const contactItemsAPI = {
+    getAll: async () => apiFetch('/contact/items'),
+    add: async (data) => apiFetch('/contact/items', { method: 'POST', body: JSON.stringify(data) }),
+    update: async (id, data) => apiFetch(`/contact/items/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: async (id) => apiFetch(`/contact/items/${id}`, { method: 'DELETE' }),
+};
+
+// =============================================
+// Messages API
+// =============================================
+
 export const messagesAPI = {
     /**
      * Get single message (requires auth)
@@ -238,4 +293,8 @@ export default {
     projects: projectsAPI,
     contact: contactAPI,
     messages: messagesAPI,
+    hero: heroAPI,
+    about: aboutAPI,
+    video: videoAPI,
+    contactItems: contactItemsAPI,
 };

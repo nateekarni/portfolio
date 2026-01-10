@@ -9,7 +9,10 @@ import {
     LogOut,
     Menu,
     X,
-    ArrowLeft
+    ArrowLeft,
+    Star,
+    User,
+    PlayCircle
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,8 +24,11 @@ const AdminLayout = () => {
 
     const menuItems = [
         { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { path: '/admin/hero', label: 'Hero Section', icon: Star },
+        { path: '/admin/about', label: 'About Me', icon: User },
         { path: '/admin/services', label: 'Services', icon: Briefcase },
         { path: '/admin/projects', label: 'Projects', icon: FolderOpen },
+        { path: '/admin/video', label: 'Video Section', icon: PlayCircle },
         { path: '/admin/contact', label: 'Contact Info', icon: Mail },
         { path: '/admin/messages', label: 'Messages', icon: MessageSquare },
     ];
@@ -46,14 +52,15 @@ const AdminLayout = () => {
 
             {/* Sidebar */}
             <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50
+        fixed lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto
+        inset-y-0 left-0 z-50
         w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
         transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-                <div className="flex flex-col h-full">
+                <div className="flex flex-col min-h-full">
                     {/* Logo/Header */}
-                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
                         <div className="flex items-center justify-between">
                             <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                                 Admin Panel

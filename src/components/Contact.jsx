@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { contactAPI } from '../services/api';
+import { contactItemsAPI, contactAPI } from '../services/api';
 
 const Contact = () => {
   const { t } = useTranslation();
-  const [contactInfo, setContactInfo] = useState({
-    email: 'hello@example.com',
-    phone: '+1 (555) 000-0000',
-    location: 'New York, NY'
-  });
+  const [contactItems, setContactItems] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,24 +17,18 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
 
-  // Fetch contact info from API
+  // Fetch contact items from API
   useEffect(() => {
-    const fetchContactInfo = async () => {
+    const fetchContactItems = async () => {
       try {
-        const res = await contactAPI.getInfo();
-        if (res.data) {
-          setContactInfo({
-            email: res.data.email || 'hello@example.com',
-            phone: res.data.phone || '+1 (555) 000-0000',
-            location: res.data.location || 'New York, NY'
-          });
-        }
+        const res = await contactItemsAPI.getAll();
+        setContactItems(res.data);
       } catch (error) {
-        console.log('Using fallback contact info:', error.message);
+        console.log('Error fetching contact items:', error.message);
       }
     };
 
-    fetchContactInfo();
+    fetchContactItems();
   }, []);
 
   const handleChange = (e) => {
@@ -84,35 +75,24 @@ const Contact = () => {
             </p>
 
             <div className='space-y-8'>
-              <div className='flex items-center gap-6 group'>
-                <div className='w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
-                  <Mail className='w-6 h-6' />
-                </div>
-                <div>
-                  <div className='text-sm text-secondary font-medium'>Email</div>
-                  <div className='text-xl font-bold'>{contactInfo.email}</div>
-                </div>
-              </div>
-
-              <div className='flex items-center gap-6 group'>
-                <div className='w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
-                  <Phone className='w-6 h-6' />
-                </div>
-                <div>
-                  <div className='text-sm text-secondary font-medium'>Phone</div>
-                  <div className='text-xl font-bold'>{contactInfo.phone}</div>
-                </div>
-              </div>
-
-              <div className='flex items-center gap-6 group'>
-                <div className='w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
-                  <MapPin className='w-6 h-6' />
-                </div>
-                <div>
-                  <div className='text-sm text-secondary font-medium'>Location</div>
-                  <div className='text-xl font-bold'>{contactInfo.location}</div>
-                </div>
-              </div>
+              {contactItems.length === 0 ? (
+                <p className="text-secondary italic">Loading contact info...</p>
+              ) : (
+                contactItems.map((item) => {
+                  const Icon = LucideIcons[item.icon] || LucideIcons.HelpCircle;
+                  return (
+                    <div key={item.id} className='flex items-center gap-6 group'>
+                      <div className='w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
+                        <Icon className='w-6 h-6' />
+                      </div>
+                      <div>
+                        <div className='text-sm text-secondary font-medium'>{item.title}</div>
+                        <div className='text-xl font-bold break-all'>{item.value}</div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </motion.div>
 
@@ -192,7 +172,7 @@ const Contact = () => {
               <button
                 type='submit'
                 disabled={isSubmitting}
-                className='w-full py-4 bg-primary text-bg-primary font-bold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
+                className='w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
               >
                 {isSubmitting ? (
                   <Loader className='w-5 h-5 animate-spin' />

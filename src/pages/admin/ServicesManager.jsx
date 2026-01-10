@@ -15,6 +15,8 @@ import {
     Check,
     Briefcase
 } from 'lucide-react';
+import IconPicker from '../../components/admin/IconPicker';
+import * as LucideIcons from 'lucide-react';
 
 const ServicesManager = () => {
     const [services, setServices] = useState([]);
@@ -24,6 +26,8 @@ const ServicesManager = () => {
     const [editingId, setEditingId] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [expandedId, setExpandedId] = useState(null);
+    const [showIconPicker, setShowIconPicker] = useState(null); // 'main' or item index (number)
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -188,6 +192,17 @@ const ServicesManager = () => {
         }));
     };
 
+    // Handle Icon Selection from Picker
+    const handleIconSelect = (iconName) => {
+        if (showIconPicker === 'main') {
+            setFormData(prev => ({ ...prev, icon: iconName }));
+        } else if (typeof showIconPicker === 'number') {
+            handleItemChange(showIconPicker, 'icon', iconName);
+        }
+        setShowIconPicker(null);
+    };
+
+
     if (loading && services.length === 0) {
         return (
             <div className="flex items-center justify-center h-64">
@@ -266,15 +281,24 @@ const ServicesManager = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Icon (Lucide icon name)
+                                        Icon
                                     </label>
-                                    <input
-                                        type="text"
-                                        value={formData.icon}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, icon: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        placeholder="Globe, Code, Palette, etc."
-                                    />
+                                    <div
+                                        onClick={() => setShowIconPicker('main')}
+                                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 cursor-pointer hover:border-primary transition-colors"
+                                    >
+                                        {formData.icon && LucideIcons[formData.icon] ? (
+                                            <>
+                                                {(() => {
+                                                    const Icon = LucideIcons[formData.icon];
+                                                    return <Icon className="w-5 h-5 text-primary" />;
+                                                })()}
+                                                <span className="text-gray-900 dark:text-white">{formData.icon}</span>
+                                            </>
+                                        ) : (
+                                            <span className="text-gray-400">Select Icon...</span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
@@ -353,13 +377,22 @@ const ServicesManager = () => {
                                                 onChange={(e) => handleItemChange(index, 'name', e.target.value)}
                                                 className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
                                             />
-                                            <input
-                                                type="text"
-                                                placeholder="Icon"
-                                                value={item.icon}
-                                                onChange={(e) => handleItemChange(index, 'icon', e.target.value)}
-                                                className="w-24 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
-                                            />
+
+                                            {/* Item Icon Picker Trigger */}
+                                            <div
+                                                onClick={() => setShowIconPicker(index)}
+                                                className="w-24 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm flex items-center justify-center cursor-pointer hover:border-primary"
+                                            >
+                                                {item.icon && LucideIcons[item.icon] ? (
+                                                    (() => {
+                                                        const Icon = LucideIcons[item.icon];
+                                                        return <Icon className="w-4 h-4" title={item.icon} />;
+                                                    })()
+                                                ) : (
+                                                    <span className="text-gray-400 text-xs">Icon</span>
+                                                )}
+                                            </div>
+
                                             <input
                                                 type="text"
                                                 placeholder="Description"
@@ -538,6 +571,19 @@ const ServicesManager = () => {
                     </div>
                 )}
             </div>
+
+            {/* Icon Picker Modal */}
+            {showIconPicker !== null && (
+                <IconPicker
+                    value={
+                        showIconPicker === 'main'
+                            ? formData.icon
+                            : formData.items[showIconPicker]?.icon
+                    }
+                    onChange={handleIconSelect}
+                    onClose={() => setShowIconPicker(null)}
+                />
+            )}
         </div>
     );
 };

@@ -21,6 +21,9 @@ import ServicesManager from './pages/admin/ServicesManager';
 import ProjectsManager from './pages/admin/ProjectsManager';
 import ContactManager from './pages/admin/ContactManager';
 import MessagesManager from './pages/admin/MessagesManager';
+import HeroManager from './pages/admin/HeroManager';
+import AboutManager from './pages/admin/AboutManager';
+import VideoManager from './pages/admin/VideoManager';
 
 const Home = () => (
   <>
@@ -86,8 +89,11 @@ function App() {
               </ProtectedRoute>
             }>
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="hero" element={<HeroManager />} />
+              <Route path="about" element={<AboutManager />} />
               <Route path="services" element={<ServicesManager />} />
               <Route path="projects" element={<ProjectsManager />} />
+              <Route path="video" element={<VideoManager />} />
               <Route path="contact" element={<ContactManager />} />
               <Route path="messages" element={<MessagesManager />} />
             </Route>

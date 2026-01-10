@@ -66,7 +66,7 @@ const Projects = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             whileHover={{ y: -8 }}
-                            className="cursor-pointer group rounded-3xl overflow-hidden glass-panel hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
+                            className="cursor-pointer group rounded-3xl overflow-hidden bg-white dark:bg-white/5 glass-panel hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
                         >
                             <div className="aspect-video overflow-hidden relative">
                                 <img
