@@ -65,14 +65,18 @@ const ProtectedRoute = ({ children }) => {
 
 function AppContent({ initialData, isLoading }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   useEffect(() => {
     // Register unauthorized handler
-    setUnauthorizedHandler((status) => {
-      // If 401/403 occurs during API call, redirect to login page
+    setUnauthorizedHandler(async (status) => {
+      // If 401/403 occurs during API call:
+      // 1. Clear local auth state
+      await logout();
+      // 2. Redirect to login page
       navigate('/admin/login');
     });
-  }, [navigate]);
+  }, [navigate, logout]);
 
   if (isLoading) {
     return <Loading />;
