@@ -104,7 +104,7 @@ const VideoManager = () => {
                                     type="text"
                                     value={videoData.video_url}
                                     onChange={e => setVideoData(prev => ({ ...prev, video_url: e.target.value }))}
-                                    className="form-input pl-10 font-mono text-sm text-primary bg-bg-secondary border-border focus:border-primary focus:ring-primary/20"
+                                    className="form-input !pl-12 font-mono text-sm text-primary bg-bg-secondary border-border focus:border-primary focus:ring-primary/20"
                                     placeholder="https://..."
                                 />
                             </div>
@@ -117,7 +117,7 @@ const VideoManager = () => {
                                     type="text"
                                     value={videoData.cover_image_url}
                                     onChange={e => setVideoData(prev => ({ ...prev, cover_image_url: e.target.value }))}
-                                    className="form-input pl-10 font-mono text-sm text-primary bg-bg-secondary border-border focus:border-primary focus:ring-primary/20"
+                                    className="form-input !pl-12 font-mono text-sm text-primary bg-bg-secondary border-border focus:border-primary focus:ring-primary/20"
                                     placeholder="https://..."
                                 />
                             </div>

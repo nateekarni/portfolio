@@ -13,7 +13,7 @@ const About = ({ initialData }) => {
   // Fallbacks
   const description1 = aboutData?.description_1 || t('about.description1');
   const description2 = aboutData?.description_2 || t('about.description2');
-  const stats = aboutData?.about_stats?.length > 0 ? aboutData.about_stats : [
+  const stats = aboutData?.stats?.length > 0 ? aboutData.stats : [
     { label: t('about.stats.experience'), value: '3+' },
     { label: t('about.stats.projects'), value: '20+' },
     { label: t('about.stats.clients'), value: '10+' },
