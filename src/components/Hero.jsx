@@ -34,7 +34,7 @@ const Hero = () => {
   const status = heroData?.status_text || t('hero.status');
 
   return (
-    <section className='min-h-screen flex items-center justify-center relative pt-20 overflow-hidden'>
+    <section id='home' className='min-h-screen flex items-center justify-center relative pt-20 overflow-hidden'>
       <div className='max-w-7xl mx-auto px-6 w-full relative z-10'>
         <div className='grid lg:grid-cols-2 gap-12 items-center'>
 

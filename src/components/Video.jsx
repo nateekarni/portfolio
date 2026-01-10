@@ -62,10 +62,10 @@ const Video = () => {
 
   const subtitle = videoData?.subtitle || t('video.subtitle');
   const description = videoData?.description || t('video.description');
-  const videoUrl = videoData?.video_url;
+  const videoUrl = videoData?.video_url || 'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-circuit-board-97-large.mp4'; // Fallback video
   const coverImage = videoData?.cover_image_url || 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1200';
 
-  if (!videoUrl) return null; // Don't show section if no video URL
+  // if (!videoUrl) return null; // Removed to ensure section is always visible with fallback
 
   return (
     <section id="video" className="py-20 relative overflow-hidden">
