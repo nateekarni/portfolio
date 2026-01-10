@@ -1,29 +1,21 @@
-import { isAuthenticated } from '../_lib/auth.js';
-import { handleCors, jsonResponse, errorResponse } from '../_lib/cors.js';
+import { handleCors, jsonResponse } from '../_lib/cors.js';
 
 export const config = {
     runtime: 'edge',
 };
 
+/**
+ * This endpoint is deprecated.
+ * Session verification is now handled by Supabase Auth on the frontend.
+ */
 export default async function handler(request) {
     // Handle CORS preflight
     const corsResponse = handleCors(request);
     if (corsResponse) return corsResponse;
 
-    if (request.method !== 'GET') {
-        return errorResponse('Method not allowed', 405);
-    }
-
-    try {
-        const authenticated = await isAuthenticated(request);
-
-        return jsonResponse({
-            authenticated,
-            timestamp: new Date().toISOString()
-        });
-
-    } catch (error) {
-        console.error('Verify error:', error);
-        return errorResponse('Internal server error', 500);
-    }
+    return jsonResponse({
+        message: 'This endpoint is deprecated. Use Supabase Auth for session verification.',
+        deprecated: true,
+        authenticated: false
+    }, 410); // 410 Gone
 }
