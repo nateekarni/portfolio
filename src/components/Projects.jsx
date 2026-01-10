@@ -10,6 +10,7 @@ const Projects = () => {
     const { t } = useTranslation();
     const [selectedId, setSelectedId] = useState(null);
     const [apiProjects, setApiProjects] = useState(null);
+    const [sectionConfig, setSectionConfig] = useState(null);
 
     // Fetch projects from API
     useEffect(() => {
@@ -30,17 +31,16 @@ const Projects = () => {
             }
         };
 
+        const fetchConfig = async () => {
+            try {
+                const res = await projectsAPI.getConfig();
+                if (res.data) setSectionConfig(res.data);
+            } catch (e) { console.error(e); }
+        };
+
         fetchProjects();
         fetchConfig();
     }, []);
-
-    const [sectionConfig, setSectionConfig] = useState(null);
-    const fetchConfig = async () => {
-        try {
-            const res = await projectsAPI.getConfig();
-            if (res.data) setSectionConfig(res.data);
-        } catch (e) { console.error(e); }
-    };
 
     // Use API data if available, otherwise use static data
     const projects = apiProjects || projectsData;
@@ -93,7 +93,7 @@ const Projects = () => {
                                         <span className="text-xs font-medium text-primary px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
                                             {project.category}
                                         </span>
-                                        <h3 className="text-xl font-bold mt-3 group-hover:text-primary transition-colors text-gray-900 dark:text-white">
+                                        <h3 className="text-xl font-bold mt-3 group-hover:text-primary transition-colors text-primary dark:text-white">
                                             {project.title}
                                         </h3>
                                     </div>
@@ -171,7 +171,7 @@ const Projects = () => {
                                             {selectedProject.category}
                                         </span>
 
-                                        <h3 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">{selectedProject.title}</h3>
+                                        <h3 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-white">{selectedProject.title}</h3>
 
                                         <p className="text-secondary dark:text-gray-300 text-lg leading-relaxed mb-8">
                                             {selectedProject.desc}
