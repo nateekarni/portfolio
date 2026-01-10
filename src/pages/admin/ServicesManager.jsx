@@ -16,6 +16,7 @@ import {
     Briefcase
 } from 'lucide-react';
 import IconPicker from '../../components/admin/IconPicker';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 import * as LucideIcons from 'lucide-react';
 
 const ServicesManager = () => {
@@ -27,6 +28,10 @@ const ServicesManager = () => {
     const [showForm, setShowForm] = useState(false);
     const [expandedId, setExpandedId] = useState(null);
     const [showIconPicker, setShowIconPicker] = useState(null); // 'main' or item index (number)
+
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -122,13 +127,19 @@ const ServicesManager = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!confirm('Are you sure you want to delete this service?')) return;
+    const handleDelete = (id) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+    };
 
+    const confirmDelete = async () => {
+         if (!deleteId) return;
         try {
-            await servicesAPI.delete(id);
+            await servicesAPI.delete(deleteId);
             setSuccess('Service deleted successfully!');
             fetchServices();
+            setShowDeleteModal(false);
+            setDeleteId(null);
         } catch (err) {
             setError(err.message);
         }
@@ -647,6 +658,15 @@ const ServicesManager = () => {
                     />
                 )
             }
+
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={confirmDelete}
+                title="Delete Service"
+                message="Are you sure you want to delete this service? This action cannot be undone."
+                type="danger"
+            />
         </div >
     );
 };

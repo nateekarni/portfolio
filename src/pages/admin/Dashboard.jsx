@@ -13,6 +13,7 @@ import {
     Loader,
     CheckCircle
 } from 'lucide-react';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
@@ -24,13 +25,17 @@ const Dashboard = () => {
     const [error, setError] = useState(null);
     const [seeding, setSeeding] = useState(false);
     const [seedResult, setSeedResult] = useState(null);
+    const [showSeedModal, setShowSeedModal] = useState(false);
 
-    const seedDatabase = async () => {
-        if (!confirm('This will seed the database with initial data. Continue?')) return;
+    const handleSeedClick = () => {
+        setShowSeedModal(true);
+    };
 
+    const confirmSeed = async () => {
         setSeeding(true);
         setSeedResult(null);
         setError(null);
+        setShowSeedModal(false);
 
         try {
             const { data: { session } } = await supabase.auth.getSession();
@@ -221,7 +226,7 @@ const Dashboard = () => {
                         </p>
                     </div>
                     <button
-                        onClick={seedDatabase}
+                        onClick={handleSeedClick}
                         disabled={seeding}
                         className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg cursor-pointer"
                     >
@@ -266,6 +271,16 @@ const Dashboard = () => {
                     <li>• ข้อความจาก Contact Form จะปรากฏในหน้า Messages</li>
                 </ul>
             </div>
+
+            <ConfirmModal
+                isOpen={showSeedModal}
+                onClose={() => setShowSeedModal(false)}
+                onConfirm={confirmSeed}
+                title="Seed Database"
+                message="This will seed the database with initial data. Existing data might be duplicated or overwritten. Are you sure you want to continue?"
+                type="warning"
+                confirmText="Seed Database"
+            />
         </div>
     );
 };

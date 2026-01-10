@@ -12,12 +12,17 @@ import {
     Trophy,
     Award
 } from 'lucide-react';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const AboutManager = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteConfig, setDeleteConfig] = useState({ type: null, id: null });
 
     const [aboutData, setAboutData] = useState({
         title: '',
@@ -93,14 +98,9 @@ const AboutManager = () => {
         }
     };
 
-    const handleDeleteStat = async (id) => {
-        if (!confirm('Delete this stat?')) return;
-        try {
-            await aboutAPI.deleteStat(id);
-            setAboutData(prev => ({ ...prev, stats: prev.stats.filter(s => s.id !== id) }));
-        } catch (err) {
-            setError(err.message);
-        }
+    const handleDeleteStat = (id) => {
+        setDeleteConfig({ type: 'stat', id });
+        setShowDeleteModal(true);
     };
 
     // --- Certifications Management ---
@@ -135,11 +135,24 @@ const AboutManager = () => {
         }
     };
 
-    const handleDeleteCert = async (id) => {
-        if (!confirm('Delete this certificate?')) return;
+    const handleDeleteCert = (id) => {
+        setDeleteConfig({ type: 'cert', id });
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteConfig.id) return;
+        
         try {
-            await aboutAPI.deleteCert(id);
-            setAboutData(prev => ({ ...prev, certifications: prev.certifications.filter(c => c.id !== id) }));
+            if (deleteConfig.type === 'stat') {
+                 await aboutAPI.deleteStat(deleteConfig.id);
+                 setAboutData(prev => ({ ...prev, stats: prev.stats.filter(s => s.id !== deleteConfig.id) }));
+            } else if (deleteConfig.type === 'cert') {
+                 await aboutAPI.deleteCert(deleteConfig.id);
+                 setAboutData(prev => ({ ...prev, certifications: prev.certifications.filter(c => c.id !== deleteConfig.id) }));
+            }
+            setShowDeleteModal(false);
+            setDeleteConfig({ type: null, id: null });
         } catch (err) {
             setError(err.message);
         }
@@ -337,6 +350,19 @@ const AboutManager = () => {
                     ))}
                 </div>
             </div>
+
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={confirmDelete}
+                title={deleteConfig.type === 'stat' ? 'Delete Stat' : 'Delete Certificate'}
+                message={
+                    deleteConfig.type === 'stat' 
+                    ? 'Are you sure you want to delete this stat?'
+                    : 'Are you sure you want to delete this certificate?'
+                }
+                type="danger"
+            />
         </div>
     );
 };

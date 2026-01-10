@@ -12,6 +12,7 @@ import {
     Info
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const ContactManager = () => {
     const [items, setItems] = useState([]);
@@ -21,6 +22,10 @@ const ContactManager = () => {
     const [showIconPicker, setShowIconPicker] = useState(null);
     const [configData, setConfigData] = useState({ title: '', description: '' });
     const [configSaving, setConfigSaving] = useState(false);
+
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
     useEffect(() => {
         fetchItems();
@@ -83,11 +88,18 @@ const ContactManager = () => {
         }
     };
 
-    const handleDeleteItem = async (id) => {
-        if (!confirm('Are you sure you want to delete this contact item?')) return;
+    const handleDeleteItem = (id) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteId) return;
         try {
-            await contactItemsAPI.delete(id);
-            setItems(items.filter(i => i.id !== id));
+            await contactItemsAPI.delete(deleteId);
+            setItems(items.filter(i => i.id !== deleteId));
+            setShowDeleteModal(false);
+            setDeleteId(null);
         } catch (err) {
             setError(err.message);
         }
@@ -235,6 +247,15 @@ const ContactManager = () => {
                     />
                 )
             }
+            
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={confirmDelete}
+                title="Delete Contact Item"
+                message="Are you sure you want to delete this contact item?"
+                type="danger"
+            />
         </div >
     );
 };

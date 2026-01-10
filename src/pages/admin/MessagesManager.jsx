@@ -11,6 +11,7 @@ import {
     MessageSquare,
     RefreshCw
 } from 'lucide-react';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const MessagesManager = () => {
     const [messages, setMessages] = useState([]);
@@ -19,6 +20,10 @@ const MessagesManager = () => {
     const [success, setSuccess] = useState(null);
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [unreadCount, setUnreadCount] = useState(0);
+
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
     useEffect(() => {
         fetchMessages();
@@ -49,16 +54,22 @@ const MessagesManager = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!confirm('Are you sure you want to delete this message?')) return;
+    const handleDelete = (id) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+    };
 
+    const confirmDelete = async () => {
+        if (!deleteId) return;
         try {
-            await messagesAPI.delete(id);
+            await messagesAPI.delete(deleteId);
             setSuccess('Message deleted successfully!');
-            setMessages(prev => prev.filter(m => m.id !== id));
-            if (selectedMessage?.id === id) {
+            setMessages(prev => prev.filter(m => m.id !== deleteId));
+            if (selectedMessage?.id === deleteId) {
                 setSelectedMessage(null);
             }
+            setShowDeleteModal(false);
+            setDeleteId(null);
         } catch (err) {
             setError(err.message);
         }
@@ -279,6 +290,15 @@ const MessagesManager = () => {
                     </div>
                 </div>
             )}
+            
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={confirmDelete}
+                title="Delete Message"
+                message="Are you sure you want to delete this message?"
+                type="danger"
+            />
         </div>
     );
 };

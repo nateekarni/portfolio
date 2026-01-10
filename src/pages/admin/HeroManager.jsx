@@ -12,6 +12,7 @@ import {
     Image as ImageIcon
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const HeroManager = () => {
     const [loading, setLoading] = useState(true);
@@ -19,6 +20,10 @@ const HeroManager = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [showIconPicker, setShowIconPicker] = useState(null); // stores index of item being edited
+    
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
     const [heroData, setHeroData] = useState({
         greeting: '',
@@ -100,14 +105,21 @@ const HeroManager = () => {
         }
     };
 
-    const handleDeleteSocial = async (id) => {
-        if (!confirm('Are you sure you want to delete this link?')) return;
+    const handleDeleteSocial = (id) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteId) return;
         try {
-            await heroAPI.deleteSocialLink(id);
+            await heroAPI.deleteSocialLink(deleteId);
             setHeroData(prev => ({
                 ...prev,
-                social_links: prev.social_links.filter(link => link.id !== id)
+                social_links: prev.social_links.filter(link => link.id !== deleteId)
             }));
+            setShowDeleteModal(false);
+            setDeleteId(null);
         } catch (err) {
             setError(err.message);
         }
@@ -283,6 +295,15 @@ const HeroManager = () => {
                     onClose={() => setShowIconPicker(null)}
                 />
             )}
+
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={confirmDelete}
+                title="Delete Link"
+                message="Are you sure you want to delete this social link?"
+                type="danger"
+            />
         </div>
     );
 };

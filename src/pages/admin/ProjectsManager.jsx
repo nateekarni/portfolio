@@ -15,6 +15,7 @@ import {
     Check,
     FolderOpen
 } from 'lucide-react';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const ProjectsManager = () => {
     const [projects, setProjects] = useState([]);
@@ -36,6 +37,10 @@ const ProjectsManager = () => {
         is_active: true
     });
     const [tagInput, setTagInput] = useState('');
+    
+    // Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
     useEffect(() => {
         fetchProjects();
@@ -108,13 +113,19 @@ const ProjectsManager = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!confirm('Are you sure you want to delete this project?')) return;
+    const handleDelete = (id) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+    };
 
+    const confirmDelete = async () => {
+        if (!deleteId) return;
         try {
-            await projectsAPI.delete(id);
+            await projectsAPI.delete(deleteId);
             setSuccess('Project deleted successfully!');
             fetchProjects();
+            setShowDeleteModal(false);
+            setDeleteId(null);
         } catch (err) {
             setError(err.message);
         }
@@ -505,6 +516,15 @@ const ProjectsManager = () => {
                     ))}
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={confirmDelete}
+                title="Delete Project"
+                message="Are you sure you want to delete this project? This action cannot be undone."
+                type="danger"
+            />
         </div>
     );
 };
