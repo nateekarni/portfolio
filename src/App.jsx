@@ -69,8 +69,8 @@ function AppContent({ initialData, isLoading }) {
   useEffect(() => {
     // Register unauthorized handler
     setUnauthorizedHandler((status) => {
-      // If 401/403 occurs during API call, redirect to unauthorized page
-      navigate('/unauthorized');
+      // If 401/403 occurs during API call, redirect to login page
+      navigate('/admin/login');
     });
   }, [navigate]);
 
