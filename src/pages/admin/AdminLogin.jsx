@@ -88,7 +88,7 @@ const AdminLogin = () => {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="form-input pl-12 pr-4"
+                                    className="form-input !pl-12 pr-4 bg-bg-secondary border-border text-text-primary placeholder:text-text-secondary focus:border-primary focus:ring-primary/20"
                                     placeholder="admin@example.com"
                                     autoComplete="email"
                                     disabled={isLoggingIn}
@@ -102,26 +102,26 @@ const AdminLogin = () => {
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <Lock className="w-5 h-5 text-gray-400" />
+                                    <Lock className="w-5 h-5 text-text-secondary" />
                                 </div>
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="form-input pl-12 pr-12 text-gray-900 dark:text-white"
-                                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                                    className="form-input !pl-12 pr-12 bg-bg-secondary border-border text-text-primary placeholder:text-text-secondary focus:border-primary focus:ring-primary/20"
+                                    placeholder="••••••••"
                                     autoComplete="current-password"
                                     disabled={isLoggingIn}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                                    className="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer"
                                 >
                                     {showPassword ? (
-                                        <EyeOff className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                                        <EyeOff className="w-5 h-5 text-text-secondary hover:text-text-primary" />
                                     ) : (
-                                        <Eye className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                                        <Eye className="w-5 h-5 text-text-secondary hover:text-text-primary" />
                                     )}
                                 </button>
                             </div>
@@ -130,7 +130,7 @@ const AdminLogin = () => {
                         <button
                             type="submit"
                             disabled={isLoggingIn || !email.trim() || !password.trim()}
-                            className="w-full py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                            className="cursor-pointer w-full py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                         >
                             {isLoggingIn ? (
                                 <>
@@ -143,9 +143,9 @@ const AdminLogin = () => {
                         </button>
                     </form>
 
-                    <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <p className="text-xs text-gray-400 text-center">
-                            ðŸ”’ Secured with Supabase Authentication
+                    <div className="mt-8 pt-6 border-t border-border">
+                        <p className="text-xs text-text-secondary text-center">
+                            🔒 Secured with Supabase Authentication
                         </p>
                     </div>
                 </div>
