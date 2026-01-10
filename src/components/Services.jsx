@@ -267,7 +267,7 @@ const Services = () => {
   }, [currentIndex, isPaused, isMobile, maxIndex, displayServices.length]);
 
   return (
-    <section id='services' className='py-20 relative'>
+    <section id='services' className='py-24 relative'>
       <div className='max-w-7xl mx-auto px-6'>
         {/* Main Services */}
         <motion.div

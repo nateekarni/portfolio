@@ -68,7 +68,7 @@ const Video = () => {
   // if (!videoUrl) return null; // Removed to ensure section is always visible with fallback
 
   return (
-    <section id="video" className="py-20 relative overflow-hidden">
+    <section id="video" className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

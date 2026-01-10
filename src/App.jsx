@@ -33,7 +33,7 @@ import SettingsManager from './pages/admin/SettingsManager';
 const Home = ({ initialData }) => (
   <>
     <Navbar />
-    <main className="relative z-10 space-y-20 md:space-y-32 pb-20">
+    <main className="relative z-10 pb-20">
       <Hero initialData={initialData.hero} />
       <About initialData={initialData.about} />
       <Services initialData={initialData.services} />
