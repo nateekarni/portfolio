@@ -12,7 +12,8 @@ import {
     ChevronDown,
     ChevronUp,
     AlertCircle,
-    Check
+    Check,
+    Briefcase
 } from 'lucide-react';
 
 const ServicesManager = () => {
@@ -455,8 +456,8 @@ const ServicesManager = () => {
                                                 {service.title}
                                             </h3>
                                             <span className={`px-2 py-1 text-xs rounded-full ${service.category === 'main'
-                                                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
-                                                    : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-400'
+                                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                                : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-400'
                                                 }`}>
                                                 {service.category}
                                             </span>
@@ -474,8 +475,8 @@ const ServicesManager = () => {
                                         <button
                                             onClick={() => handleToggleActive(service)}
                                             className={`p-2 rounded-lg transition-colors ${service.is_active
-                                                    ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20'
-                                                    : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                                ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20'
+                                                : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                                                 }`}
                                             title={service.is_active ? 'Hide' : 'Show'}
                                         >
