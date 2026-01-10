@@ -55,8 +55,7 @@ export default async function handler(request) {
             const aboutFields = {
                 title: body.title,
                 description_1: body.description_1,
-                description_2: body.description_2,
-                updated_at: new Date().toISOString()
+                description_2: body.description_2
             };
 
             const { data: existing } = await supabaseAdmin.from('about_sections').select('id').limit(1).single();

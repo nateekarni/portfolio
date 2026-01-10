@@ -60,8 +60,7 @@ export default async function handler(request) {
                 greeting: body.greeting,
                 name: body.name,
                 role: body.role,
-                status_text: body.status_text,
-                updated_at: new Date().toISOString()
+                status_text: body.status_text
             };
 
             // Upsert hero (always ID 1 or ensure single row)

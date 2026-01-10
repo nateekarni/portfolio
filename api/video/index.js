@@ -42,8 +42,7 @@ export default async function handler(request) {
                 subtitle: body.subtitle,
                 description: body.description,
                 video_url: body.video_url,
-                cover_image_url: body.cover_image_url,
-                updated_at: new Date().toISOString()
+                cover_image_url: body.cover_image_url
             };
 
             const { data: existing } = await supabaseAdmin.from('video_sections').select('id').limit(1).single();
