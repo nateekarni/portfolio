@@ -3,12 +3,14 @@ import { Menu, X, Terminal, Globe, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
+import { useSettings } from '../contexts/SettingsContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const { settings } = useSettings();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -47,10 +49,16 @@ const Navbar = () => {
         
         {/* Logo */}
         <a href="#home" className="flex items-center gap-2 group">
-          <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-             <Terminal className="w-6 h-6 text-primary" />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Portfolio</span>
+          {settings?.logo_image_url ? (
+             <img src={settings.logo_image_url} alt="Logo" className="h-10 w-auto object-contain" />
+          ) : (
+            <>
+              <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                <Terminal className="w-6 h-6 text-primary" />
+              </div>
+              <span className="text-xl font-bold tracking-tight">{settings?.logo_text || 'Portfolio'}</span>
+            </>
+          )}
         </a>
 
         {/* Desktop Navigation */}

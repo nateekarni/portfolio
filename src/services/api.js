@@ -78,6 +78,23 @@ async function apiFetch(endpoint, options = {}) {
 }
 
 // =============================================
+// Settings API
+// =============================================
+
+export const settingsAPI = {
+    get: async () => {
+        return apiFetch('/settings');
+    },
+    
+    update: async (data) => {
+        return apiFetch('/settings', {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+};
+
+// =============================================
 // Services API
 // =============================================
 

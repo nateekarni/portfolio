@@ -13,7 +13,8 @@ import {
     ArrowLeft,
     Star,
     User,
-    PlayCircle
+    PlayCircle,
+    Settings
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -25,6 +26,7 @@ const AdminLayout = () => {
 
     const menuItems = [
         { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { path: '/admin/settings', label: 'Site Settings', icon: Settings },
         { path: '/admin/hero', label: 'Hero Section', icon: Star },
         { path: '/admin/about', label: 'About Me', icon: User },
         { path: '/admin/services', label: 'Services', icon: Briefcase },

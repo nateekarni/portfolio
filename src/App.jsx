@@ -28,6 +28,7 @@ import MessagesManager from './pages/admin/MessagesManager';
 import HeroManager from './pages/admin/HeroManager';
 import AboutManager from './pages/admin/AboutManager';
 import VideoManager from './pages/admin/VideoManager';
+import SettingsManager from './pages/admin/SettingsManager';
 
 const Home = ({ initialData }) => (
   <>
@@ -119,6 +120,7 @@ function AppContent({ initialData, isLoading }) {
         <Route path="video" element={<VideoManager />} />
         <Route path="contact" element={<ContactManager />} />
         <Route path="messages" element={<MessagesManager />} />
+        <Route path="settings" element={<SettingsManager />} />
       </Route>
     </Routes>
   );
