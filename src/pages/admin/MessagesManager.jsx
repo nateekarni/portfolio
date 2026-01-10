@@ -111,16 +111,16 @@ const MessagesManager = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h1 className="text-3xl font-bold text-text-primary mb-2">
                         Messages
                     </h1>
-                    <p className="text-gray-500">
+                    <p className="text-text-secondary">
                         ข้อความจาก Contact Form ({unreadCount} ยังไม่อ่าน)
                     </p>
                 </div>
                 <button
                     onClick={fetchMessages}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-bg-surface border border-border rounded-xl hover:bg-bg-secondary transition-colors cursor-pointer text-text-primary"
                 >
                     <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
                     Refresh
@@ -132,7 +132,7 @@ const MessagesManager = () => {
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3">
                     <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
                     <span className="text-red-700 dark:text-red-400">{error}</span>
-                    <button onClick={() => setError(null)} className="ml-auto">
+                    <button onClick={() => setError(null)} className="ml-auto cursor-pointer">
                         <X size={18} className="text-red-500" />
                     </button>
                 </div>
@@ -141,7 +141,7 @@ const MessagesManager = () => {
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-500 shrink-0" />
                     <span className="text-green-700 dark:text-green-400">{success}</span>
-                    <button onClick={() => setSuccess(null)} className="ml-auto">
+                    <button onClick={() => setSuccess(null)} className="ml-auto cursor-pointer">
                         <X size={18} className="text-green-500" />
                     </button>
                 </div>
@@ -149,38 +149,38 @@ const MessagesManager = () => {
 
             {/* Messages */}
             {messages.length === 0 ? (
-                <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center text-gray-500">
+                <div className="bg-bg-surface rounded-2xl border border-border p-12 text-center text-text-secondary">
                     <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
                     <p>ยังไม่มีข้อความ</p>
                 </div>
             ) : (
                 <div className="grid lg:grid-cols-3 gap-6">
                     {/* Messages List */}
-                    <div className="lg:col-span-1 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-[600px] overflow-y-auto">
+                    <div className="lg:col-span-1 bg-bg-surface rounded-2xl border border-border overflow-hidden">
+                        <div className="divide-y divide-border max-h-[600px] overflow-y-auto">
                             {messages.map((message) => (
                                 <div
                                     key={message.id}
                                     onClick={() => handleSelectMessage(message)}
                                     className={`p-4 cursor-pointer transition-colors ${selectedMessage?.id === message.id
                                             ? 'bg-primary/5 border-l-4 border-primary'
-                                            : 'hover:bg-gray-50 dark:hover:bg-gray-700'
-                                        } ${!message.is_read ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}`}
+                                            : 'hover:bg-bg-secondary'
+                                        } ${!message.is_read ? 'bg-blue-500/5' : ''}`}
                                 >
                                     <div className="flex items-start gap-3">
                                         <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${message.is_read ? 'bg-gray-300' : 'bg-blue-500'
                                             }`} />
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between mb-1">
-                                                <span className={`font-medium truncate ${message.is_read ? 'text-gray-700 dark:text-gray-300' : 'text-gray-900 dark:text-white'
+                                                <span className={`font-medium truncate ${message.is_read ? 'text-text-secondary' : 'text-text-primary'
                                                     }`}>
                                                     {message.name}
                                                 </span>
                                             </div>
-                                            <div className="text-sm text-gray-500 dark:text-gray-400 truncate mb-1">
+                                            <div className="text-sm text-text-secondary truncate mb-1">
                                                 {message.subject || '(No Subject)'}
                                             </div>
-                                            <div className="flex items-center gap-2 text-xs text-gray-400">
+                                            <div className="flex items-center gap-2 text-xs text-text-secondary/70">
                                                 <Clock size={12} />
                                                 {formatDate(message.created_at)}
                                             </div>
@@ -192,17 +192,17 @@ const MessagesManager = () => {
                     </div>
 
                     {/* Message Detail */}
-                    <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div className="lg:col-span-2 bg-bg-surface rounded-2xl border border-border overflow-hidden">
                         {selectedMessage ? (
                             <div className="flex flex-col h-full">
                                 {/* Message Header */}
-                                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+                                <div className="p-6 border-b border-border">
                                     <div className="flex items-start justify-between mb-4">
                                         <div>
-                                            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                                            <h2 className="text-xl font-bold text-text-primary mb-1">
                                                 {selectedMessage.subject || '(No Subject)'}
                                             </h2>
-                                            <div className="flex items-center gap-4 text-sm text-gray-500">
+                                            <div className="flex items-center gap-4 text-sm text-text-secondary">
                                                 <span className="flex items-center gap-1">
                                                     <Mail size={14} />
                                                     {selectedMessage.email}
@@ -216,8 +216,8 @@ const MessagesManager = () => {
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => handleMarkAsRead(selectedMessage)}
-                                                className={`p-2 rounded-lg transition-colors ${selectedMessage.is_read
-                                                        ? 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                                className={`p-2 rounded-lg transition-colors cursor-pointer ${selectedMessage.is_read
+                                                        ? 'text-text-secondary hover:bg-bg-secondary'
                                                         : 'text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20'
                                                     }`}
                                                 title={selectedMessage.is_read ? 'Mark as unread' : 'Mark as read'}
@@ -226,7 +226,7 @@ const MessagesManager = () => {
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(selectedMessage.id)}
-                                                className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                                                className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg cursor-pointer"
                                                 title="Delete"
                                             >
                                                 <Trash2 size={18} />
@@ -238,10 +238,10 @@ const MessagesManager = () => {
                                             {selectedMessage.name.charAt(0).toUpperCase()}
                                         </div>
                                         <div>
-                                            <div className="font-medium text-gray-900 dark:text-white">
+                                            <div className="font-medium text-text-primary">
                                                 {selectedMessage.name}
                                             </div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-text-secondary">
                                                 {selectedMessage.email}
                                             </div>
                                         </div>
@@ -251,17 +251,17 @@ const MessagesManager = () => {
                                 {/* Message Body */}
                                 <div className="p-6 flex-1 overflow-y-auto">
                                     <div className="prose dark:prose-invert max-w-none">
-                                        <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+                                        <p className="whitespace-pre-wrap text-text-primary">
                                             {selectedMessage.message}
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Reply Action */}
-                                <div className="p-6 border-t border-gray-100 dark:border-gray-700">
+                                <div className="p-6 border-t border-border">
                                     <a
                                         href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject || 'Your Message'}`}
-                                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all"
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all cursor-pointer"
                                     >
                                         <Mail size={18} />
                                         Reply via Email
@@ -269,7 +269,7 @@ const MessagesManager = () => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="flex items-center justify-center h-full py-20 text-gray-400">
+                            <div className="flex items-center justify-center h-full py-20 text-text-secondary">
                                 <div className="text-center">
                                     <Mail className="w-16 h-16 mx-auto mb-4 opacity-50" />
                                     <p>เลือกข้อความเพื่อดูรายละเอียด</p>

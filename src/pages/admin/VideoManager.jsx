@@ -54,11 +54,11 @@ const VideoManager = () => {
         }
     };
 
-    if (loading) return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    if (loading) return <div className="p-8 text-center text-text-secondary">Loading...</div>;
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Video Section</h1>
+            <h1 className="text-3xl font-bold text-text-primary">Video Section</h1>
 
             {/* Alerts */}
             {error && (
@@ -72,52 +72,52 @@ const VideoManager = () => {
                 </div>
             )}
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-bg-surface rounded-2xl border border-border p-6 shadow-sm">
                 <form onSubmit={handleSave} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Subtitle</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Section Subtitle</label>
                         <input
                             type="text"
                             value={videoData.subtitle}
                             onChange={e => setVideoData(prev => ({ ...prev, subtitle: e.target.value }))}
-                            className="form-input"
+                            className="form-input bg-bg-secondary border-border text-text-primary focus:border-primary focus:ring-primary/20"
                             placeholder="e.g. My Process"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Description</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Description</label>
                         <textarea
                             rows={3}
                             value={videoData.description}
                             onChange={e => setVideoData(prev => ({ ...prev, description: e.target.value }))}
-                            className="form-input"
+                            className="form-input bg-bg-secondary border-border text-text-primary focus:border-primary focus:ring-primary/20"
                         />
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Video URL (MP4)</label>
+                            <label className="block text-sm font-medium mb-1 text-text-secondary">Video URL (MP4)</label>
                             <div className="relative">
-                                <Video className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                <Video className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary w-5 h-5" />
                                 <input
                                     type="text"
                                     value={videoData.video_url}
                                     onChange={e => setVideoData(prev => ({ ...prev, video_url: e.target.value }))}
-                                    className="form-input pl-10 font-mono text-sm text-blue-600 dark:text-blue-400"
+                                    className="form-input pl-10 font-mono text-sm text-primary bg-bg-secondary border-border focus:border-primary focus:ring-primary/20"
                                     placeholder="https://..."
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Cover Image URL</label>
+                            <label className="block text-sm font-medium mb-1 text-text-secondary">Cover Image URL</label>
                             <div className="relative">
-                                <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary w-5 h-5" />
                                 <input
                                     type="text"
                                     value={videoData.cover_image_url}
                                     onChange={e => setVideoData(prev => ({ ...prev, cover_image_url: e.target.value }))}
-                                    className="form-input pl-10 font-mono text-sm text-blue-600 dark:text-blue-400"
+                                    className="form-input pl-10 font-mono text-sm text-primary bg-bg-secondary border-border focus:border-primary focus:ring-primary/20"
                                     placeholder="https://..."
                                 />
                             </div>
@@ -125,9 +125,9 @@ const VideoManager = () => {
                     </div>
 
                     {/* Preview */}
-                    <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-8">
-                        <label className="block text-sm font-medium mb-4 dark:text-gray-300">Preview</label>
-                        <div className="relative rounded-3xl overflow-hidden glass-panel border border-black/5 dark:border-white/10 shadow-xl max-w-2xl mx-auto aspect-video bg-black">
+                    <div className="mt-8 border-t border-border pt-8">
+                        <label className="block text-sm font-medium mb-4 text-text-secondary">Preview</label>
+                        <div className="relative rounded-3xl overflow-hidden glass-panel border border-border/10 shadow-xl max-w-2xl mx-auto aspect-video bg-black">
                             <video
                                 src={videoData.video_url}
                                 poster={videoData.cover_image_url}
@@ -141,7 +141,7 @@ const VideoManager = () => {
                         <button
                             type="submit"
                             disabled={saving}
-                            className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50"
+                            className="cursor-pointer flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 transition-colors"
                         >
                             {saving ? <Loader className="animate-spin" size={20} /> : <Save size={20} />}
                             Save Changes

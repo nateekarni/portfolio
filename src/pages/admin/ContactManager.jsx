@@ -93,20 +93,20 @@ const ContactManager = () => {
         }
     };
 
-    if (loading) return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    if (loading) return <div className="p-8 text-center text-text-secondary">Loading...</div>;
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h1 className="text-3xl font-bold text-text-primary mb-2">
                         Contact Items
                     </h1>
-                    <p className="text-gray-500">Manage contact methods displayed on the Contact page.</p>
+                    <p className="text-text-secondary">Manage contact methods displayed on the Contact page.</p>
                 </div>
                 <button
                     onClick={handleAddItem}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all text-sm font-medium"
+                    className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all text-sm font-medium"
                 >
                     <Plus size={18} />
                     Add Item
@@ -114,25 +114,25 @@ const ContactManager = () => {
             </div>
 
             {/* Section Configuration */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Section Settings</h2>
+            <div className="bg-bg-surface rounded-2xl border border-border p-6 shadow-sm">
+                <h2 className="text-xl font-bold mb-4 text-text-primary">Section Settings</h2>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Title</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Section Title</label>
                         <input
                             type="text"
                             value={configData.title}
                             onChange={(e) => setConfigData(prev => ({ ...prev, title: e.target.value }))}
-                            className="form-input"
+                            className="form-input bg-bg-secondary border-border text-text-primary focus:border-primary focus:ring-primary/20"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Description</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Section Description</label>
                         <input
                             type="text"
                             value={configData.description}
                             onChange={(e) => setConfigData(prev => ({ ...prev, description: e.target.value }))}
-                            className="form-input"
+                            className="form-input bg-bg-secondary border-border text-text-primary focus:border-primary focus:ring-primary/20"
                         />
                     </div>
                 </div>
@@ -147,7 +147,7 @@ const ContactManager = () => {
                             finally { setConfigSaving(false); }
                         }}
                         disabled={configSaving}
-                        className="px-4 py-2 bg-gray-900 dark:bg-gray-600 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50"
+                        className="cursor-pointer px-4 py-2 bg-bg-primary border border-border text-text-primary rounded-lg hover:bg-bg-secondary disabled:opacity-50 transition-colors"
                     >
                         {configSaving ? 'Saving...' : 'Save Settings'}
                     </button>
@@ -172,43 +172,43 @@ const ContactManager = () => {
 
             <div className="space-y-3">
                 {items.length === 0 && (
-                    <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
-                        <Info className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-                        <p className="text-gray-500">No contact items found. Add one to get started.</p>
+                    <div className="text-center py-12 bg-bg-surface rounded-2xl border border-border">
+                        <Info className="w-12 h-12 mx-auto text-text-secondary mb-3" />
+                        <p className="text-text-secondary">No contact items found. Add one to get started.</p>
                     </div>
                 )} {items.map((item, index) => {
                     const Icon = LucideIcons[item.icon] || LucideIcons.HelpCircle;
                     return (
-                        <div key={item.id} className="flex gap-4 items-start p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow group">
-                            <div className="mt-2 cursor-move text-gray-300 hover:text-gray-500">
+                        <div key={item.id} className="flex gap-4 items-start p-6 bg-bg-surface rounded-2xl border border-border shadow-sm hover:shadow-md transition-shadow group">
+                            <div className="mt-2 cursor-move text-text-secondary hover:text-text-primary">
                                 <GripVertical size={20} />
                             </div>
 
                             <div
                                 onClick={() => setShowIconPicker(index)}
-                                className="w-12 h-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shrink-0 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all"
+                                className="w-12 h-12 flex items-center justify-center bg-bg-secondary rounded-xl border border-border shrink-0 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all"
                             >
-                                <Icon className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                                <Icon className="w-6 h-6 text-text-primary" />
                             </div>
 
                             <div className="flex-1 grid md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-xs font-semibold text-gray-500 uppercase mb-1 block">Title</label>
+                                    <label className="text-xs font-semibold text-text-secondary uppercase mb-1 block">Title</label>
                                     <input
                                         type="text"
                                         value={item.title}
                                         onChange={(e) => handleUpdateItem(index, 'title', e.target.value)}
-                                        className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 font-medium"
+                                        className="w-full px-3 py-2 rounded-lg border border-border bg-bg-secondary text-text-primary font-medium focus:ring-1 focus:ring-primary focus:border-primary"
                                         placeholder="e.g. Email"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-semibold text-gray-500 uppercase mb-1 block">Value</label>
+                                    <label className="text-xs font-semibold text-text-secondary uppercase mb-1 block">Value</label>
                                     <input
                                         type="text"
                                         value={item.value}
                                         onChange={(e) => handleUpdateItem(index, 'value', e.target.value)}
-                                        className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                                        className="w-full px-3 py-2 rounded-lg border border-border bg-bg-secondary text-text-primary focus:ring-1 focus:ring-primary focus:border-primary"
                                         placeholder="e.g. hello@example.com"
                                     />
                                 </div>
@@ -216,7 +216,7 @@ const ContactManager = () => {
 
                             <button
                                 onClick={() => handleDeleteItem(item.id)}
-                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity self-center"
+                                className="cursor-pointer p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity self-center"
                             >
                                 <Trash2 size={20} />
                             </button>

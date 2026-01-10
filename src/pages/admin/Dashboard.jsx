@@ -101,7 +101,7 @@ const Dashboard = () => {
     const StatCard = ({ title, value, subValue, subLabel, icon: Icon, color, link }) => (
         <Link
             to={link}
-            className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-primary/30 transition-all group"
+            className="bg-bg-surface rounded-2xl p-6 border border-border hover:shadow-lg hover:border-primary/30 transition-all group cursor-pointer"
         >
             <div className="flex items-start justify-between mb-4">
                 <div className={`w-12 h-12 rounded-xl ${color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
@@ -109,12 +109,12 @@ const Dashboard = () => {
                 </div>
                 <TrendingUp className="w-5 h-5 text-green-500" />
             </div>
-            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+            <div className="text-3xl font-bold text-text-primary mb-1">
                 {loading ? '...' : value}
             </div>
-            <div className="text-gray-500 dark:text-gray-400 font-medium">{title}</div>
+            <div className="text-text-secondary font-medium">{title}</div>
             {subValue !== undefined && (
-                <div className="mt-2 text-sm text-gray-400">
+                <div className="mt-2 text-sm text-text-secondary/70">
                     <span className="text-primary font-semibold">{subValue}</span> {subLabel}
                 </div>
             )}
@@ -125,10 +125,10 @@ const Dashboard = () => {
         <div className="space-y-8">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-text-primary mb-2">
                     Dashboard
                 </h1>
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-text-secondary">
                     ภาพรวมของระบบจัดการเนื้อหา
                 </p>
             </div>
@@ -173,57 +173,57 @@ const Dashboard = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+            <div className="bg-bg-surface rounded-2xl p-6 border border-border">
+                <h2 className="text-lg font-bold text-text-primary mb-4">
                     Quick Actions
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Link
                         to="/admin/services"
-                        className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-primary/10 hover:text-primary transition-all"
+                        className="flex items-center gap-3 p-4 rounded-xl bg-bg-primary hover:bg-bg-secondary hover:text-primary transition-all cursor-pointer border border-border"
                     >
-                        <Briefcase size={20} />
-                        <span className="font-medium">จัดการ Services</span>
+                        <Briefcase size={20} className="text-text-secondary" />
+                        <span className="font-medium text-text-primary">จัดการ Services</span>
                     </Link>
                     <Link
                         to="/admin/projects"
-                        className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-primary/10 hover:text-primary transition-all"
+                        className="flex items-center gap-3 p-4 rounded-xl bg-bg-primary hover:bg-bg-secondary hover:text-primary transition-all cursor-pointer border border-border"
                     >
-                        <FolderOpen size={20} />
-                        <span className="font-medium">จัดการ Projects</span>
+                        <FolderOpen size={20} className="text-text-secondary" />
+                        <span className="font-medium text-text-primary">จัดการ Projects</span>
                     </Link>
                     <Link
                         to="/admin/contact"
-                        className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-primary/10 hover:text-primary transition-all"
+                        className="flex items-center gap-3 p-4 rounded-xl bg-bg-primary hover:bg-bg-secondary hover:text-primary transition-all cursor-pointer border border-border"
                     >
-                        <Eye size={20} />
-                        <span className="font-medium">แก้ไข Contact</span>
+                        <Eye size={20} className="text-text-secondary" />
+                        <span className="font-medium text-text-primary">แก้ไข Contact</span>
                     </Link>
                     <Link
                         to="/admin/messages"
-                        className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-primary/10 hover:text-primary transition-all"
+                        className="flex items-center gap-3 p-4 rounded-xl bg-bg-primary hover:bg-bg-secondary hover:text-primary transition-all cursor-pointer border border-border"
                     >
-                        <MessageSquare size={20} />
-                        <span className="font-medium">ดู Messages</span>
+                        <MessageSquare size={20} className="text-text-secondary" />
+                        <span className="font-medium text-text-primary">ดู Messages</span>
                     </Link>
                 </div>
             </div>
 
             {/* Seed Database Section */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+            <div className="bg-bg-surface rounded-2xl p-6 border border-border">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+                        <h2 className="text-lg font-bold text-text-primary">
                             Database Seeding
                         </h2>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-text-secondary">
                             เพิ่มข้อมูลเริ่มต้น (Projects, Services, Contact) เข้าสู่ Database
                         </p>
                     </div>
                     <button
                         onClick={seedDatabase}
                         disabled={seeding}
-                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg cursor-pointer"
                     >
                         {seeding ? (
                             <>

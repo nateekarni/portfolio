@@ -113,31 +113,31 @@ const HeroManager = () => {
         }
     };
 
-    if (loading) return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    if (loading) return <div className="p-8 text-center text-text-secondary">Loading...</div>;
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Hero Section</h1>
+            <h1 className="text-3xl font-bold text-text-primary">Hero Section</h1>
 
             {/* Alerts */}
             {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 p-4 rounded-xl flex items-center gap-2">
+                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 p-4 rounded-xl flex items-center gap-2 border border-red-200 dark:border-red-900">
                     <AlertCircle size={20} /> {error}
                 </div>
             )}
             {success && (
-                <div className="bg-green-50 dark:bg-green-900/20 text-green-600 p-4 rounded-xl flex items-center gap-2">
+                <div className="bg-green-50 dark:bg-green-900/20 text-green-600 p-4 rounded-xl flex items-center gap-2 border border-green-200 dark:border-green-900">
                     <Check size={20} /> {success}
                 </div>
             )}
 
             {/* Main Content Form */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Main Content</h2>
+            <div className="bg-bg-surface rounded-2xl border border-border p-6">
+                <h2 className="text-xl font-bold mb-4 text-text-primary">Main Content</h2>
                 <form onSubmit={handleSave} className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Greeting</label>
+                            <label className="block text-sm font-medium mb-1 text-text-secondary">Greeting</label>
                             <input
                                 type="text"
                                 value={heroData.greeting}
@@ -146,7 +146,7 @@ const HeroManager = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Name</label>
+                            <label className="block text-sm font-medium mb-1 text-text-secondary">Name</label>
                             <input
                                 type="text"
                                 value={heroData.name}
@@ -156,7 +156,7 @@ const HeroManager = () => {
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Role</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Role</label>
                         <input
                             type="text"
                             value={heroData.role}
@@ -165,7 +165,7 @@ const HeroManager = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Status Text</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Status Text</label>
                         <div className="flex gap-2">
                             <span className="relative flex h-3 w-3 mt-2.5">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -180,23 +180,23 @@ const HeroManager = () => {
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Hero Image URL</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Hero Image URL</label>
                         <div className="flex gap-4 items-start">
                             <div className="flex-1">
                                 <input
                                     type="text"
                                     value={heroData.hero_image_url || ''}
                                     onChange={e => setHeroData(prev => ({ ...prev, hero_image_url: e.target.value }))}
-                                    className="form-input font-mono text-sm text-gray-500"
+                                    className="form-input font-mono text-sm"
                                     placeholder="https://example.com/me.jpg"
                                 />
-                                <p className="text-xs text-gray-400 mt-1">Leave empty to use default image.</p>
+                                <p className="text-xs text-text-secondary mt-1">Leave empty to use default image.</p>
                             </div>
-                            <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 flex-shrink-0">
+                            <div className="w-16 h-16 rounded-xl bg-bg-secondary overflow-hidden border border-border flex-shrink-0">
                                 {heroData.hero_image_url ? (
                                     <img src={heroData.hero_image_url} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                    <div className="w-full h-full flex items-center justify-center text-text-secondary">
                                         <ImageIcon size={20} />
                                     </div>
                                 )}
@@ -207,7 +207,7 @@ const HeroManager = () => {
                         <button
                             type="submit"
                             disabled={saving}
-                            className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50"
+                            className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 cursor-pointer"
                         >
                             {saving ? <Loader className="animate-spin" size={20} /> : <Save size={20} />}
                             Save Changes
@@ -217,12 +217,12 @@ const HeroManager = () => {
             </div>
 
             {/* Social Links */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-bg-surface rounded-2xl border border-border p-6">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Social Links</h2>
+                    <h2 className="text-xl font-bold text-text-primary">Social Links</h2>
                     <button
                         onClick={handleAddSocial}
-                        className="flex items-center gap-2 text-sm text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors"
+                        className="flex items-center gap-2 text-sm text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
                     >
                         <Plus size={16} /> Add Link
                     </button>
@@ -232,14 +232,14 @@ const HeroManager = () => {
                     {heroData.social_links.map((link, index) => {
                         const Icon = LucideIcons[link.icon] || LucideIcons.Link;
                         return (
-                            <div key={link.id} className="flex gap-3 items-start p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl group hover:border-primary/30 border border-transparent transition-all">
-                                <button className="mt-2 text-gray-400 cursor-move hover:text-gray-600">
+                            <div key={link.id} className="flex gap-3 items-start p-4 bg-bg-secondary rounded-xl group hover:border-primary/30 border border-transparent transition-all">
+                                <button className="mt-2 text-text-secondary cursor-move hover:text-text-primary">
                                     <GripVertical size={20} />
                                 </button>
 
-                                <div className="w-12 h-12 flex items-center justify-center bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shrink-0 cursor-pointer hover:border-primary transition-colors"
+                                <div className="w-12 h-12 flex items-center justify-center bg-bg-surface rounded-lg border border-border shrink-0 cursor-pointer hover:border-primary transition-colors"
                                     onClick={() => setShowIconPicker(index)}>
-                                    <Icon size={24} className="text-gray-700 dark:text-gray-300" />
+                                    <Icon size={24} className="text-text-primary" />
                                 </div>
 
                                 <div className="flex-1 grid md:grid-cols-2 gap-3">
@@ -249,7 +249,7 @@ const HeroManager = () => {
                                             value={link.platform}
                                             onChange={(e) => handleUpdateSocial(index, 'platform', e.target.value)}
                                             placeholder="Platform Name"
-                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 text-sm"
+                                            className="w-full px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-primary text-sm outline-none focus:border-primary"
                                         />
                                     </div>
                                     <div>
@@ -258,14 +258,14 @@ const HeroManager = () => {
                                             value={link.url}
                                             onChange={(e) => handleUpdateSocial(index, 'url', e.target.value)}
                                             placeholder="URL"
-                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 text-sm font-mono text-gray-500"
+                                            className="w-full px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-secondary font-mono text-sm outline-none focus:border-primary"
                                         />
                                     </div>
                                 </div>
 
                                 <button
                                     onClick={() => handleDeleteSocial(link.id)}
-                                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                                 >
                                     <Trash2 size={18} />
                                 </button>

@@ -43,27 +43,27 @@ const AdminLogin = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+            <div className="min-h-screen flex items-center justify-center bg-bg-primary">
                 <div className="text-center">
                     <Loader className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-                    <p className="text-gray-500">Loading...</p>
+                    <p className="text-text-secondary">Loading...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-bg-primary p-4">
             <div className="w-full max-w-md">
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+                <div className="bg-bg-surface rounded-2xl shadow-xl border border-border p-8">
                     <div className="text-center mb-8">
                         <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                             <Lock className="w-8 h-8 text-primary" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 className="text-2xl font-bold text-text-primary mb-2">
                             Admin Login
                         </h1>
-                        <p className="text-gray-500">
+                        <p className="text-text-secondary">
                             Enter your credentials to access the admin panel
                         </p>
                     </div>
@@ -77,18 +77,18 @@ const AdminLogin = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-text-secondary mb-2">
                                 Email
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <Mail className="w-5 h-5 text-gray-400" />
+                                    <Mail className="w-5 h-5 text-text-secondary" />
                                 </div>
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="form-input pl-12 pr-4 text-gray-900 dark:text-white"
+                                    className="form-input pl-12 pr-4"
                                     placeholder="admin@example.com"
                                     autoComplete="email"
                                     disabled={isLoggingIn}
@@ -97,7 +97,7 @@ const AdminLogin = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-text-secondary mb-2">
                                 Password
                             </label>
                             <div className="relative">

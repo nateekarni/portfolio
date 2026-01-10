@@ -153,11 +153,11 @@ const AboutManager = () => {
         }
     };
 
-    if (loading) return <div className="p-8 text-center text-gray-500">Loading...</div>;
+    if (loading) return <div className="p-8 text-center text-text-secondary">Loading...</div>;
 
     return (
         <div className="space-y-8 max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">About Me Setup</h1>
+            <h1 className="text-3xl font-bold text-text-primary">About Me Setup</h1>
 
             {/* Alerts */}
             {error && (
@@ -172,13 +172,13 @@ const AboutManager = () => {
             )}
 
             {/* BIO */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-bg-surface rounded-2xl border border-border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Biography</h2>
+                    <h2 className="text-xl font-bold text-text-primary">Biography</h2>
                     <button
                         onClick={handleSaveBio}
                         disabled={saving}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 text-sm"
+                        className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 text-sm transition-colors"
                     >
                         {saving ? <Loader className="animate-spin" size={16} /> : <Save size={16} />}
                         Save Bio
@@ -186,54 +186,54 @@ const AboutManager = () => {
                 </div>
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Section Title</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Section Title</label>
                         <input
                             type="text"
                             value={aboutData.title}
                             onChange={e => setAboutData(prev => ({ ...prev, title: e.target.value }))}
-                            className="form-input"
+                            className="form-input bg-bg-secondary border-border text-text-primary focus:border-primary focus:ring-primary/20"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Paragraph 1</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Paragraph 1</label>
                         <textarea
                             rows={3}
                             value={aboutData.description_1}
                             onChange={e => setAboutData(prev => ({ ...prev, description_1: e.target.value }))}
-                            className="form-input"
+                            className="form-input bg-bg-secondary border-border text-text-primary focus:border-primary focus:ring-primary/20"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-1 dark:text-gray-300">Paragraph 2</label>
+                        <label className="block text-sm font-medium mb-1 text-text-secondary">Paragraph 2</label>
                         <textarea
                             rows={3}
                             value={aboutData.description_2}
                             onChange={e => setAboutData(prev => ({ ...prev, description_2: e.target.value }))}
-                            className="form-input"
+                            className="form-input bg-bg-secondary border-border text-text-primary focus:border-primary focus:ring-primary/20"
                         />
                     </div>
                 </div>
             </div>
 
             {/* STATS */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-bg-surface rounded-2xl border border-border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                         <Trophy className="text-yellow-500" /> Stats
                     </h2>
                     <button
                         onClick={handleAddStat}
-                        className="flex items-center gap-2 text-sm text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors"
+                        className="cursor-pointer flex items-center gap-2 text-sm text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors"
                     >
                         <Plus size={16} /> Add Stat
                     </button>
                 </div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {aboutData.stats.map((stat, index) => (
-                        <div key={stat.id} className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/30 relative group">
+                        <div key={stat.id} className="p-4 rounded-xl border border-border bg-bg-secondary relative group transition-colors hover:border-border/80">
                             <button
                                 onClick={() => handleDeleteStat(stat.id)}
-                                className="absolute top-2 right-2 p-1.5 text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="cursor-pointer absolute top-2 right-2 p-1.5 text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                                 <Trash2 size={14} />
                             </button>
@@ -242,14 +242,14 @@ const AboutManager = () => {
                                     type="text"
                                     value={stat.value}
                                     onChange={e => handleUpdateStat(index, 'value', e.target.value)}
-                                    className="w-full bg-transparent border-none text-2xl font-bold text-center focus:ring-0 p-0 text-gray-900 dark:text-white"
+                                    className="w-full bg-transparent border-none text-2xl font-bold text-center focus:ring-0 p-0 text-text-primary"
                                     placeholder="Value"
                                 />
                                 <input
                                     type="text"
                                     value={stat.label}
                                     onChange={e => handleUpdateStat(index, 'label', e.target.value)}
-                                    className="w-full bg-transparent border-none text-xs text-center text-gray-500 focus:ring-0 p-0"
+                                    className="w-full bg-transparent border-none text-xs text-center text-text-secondary focus:ring-0 p-0"
                                     placeholder="Label"
                                 />
                             </div>
@@ -259,14 +259,14 @@ const AboutManager = () => {
             </div>
 
             {/* CERTIFICATIONS */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-bg-surface rounded-2xl border border-border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
                         <Award className="text-purple-500" /> Certifications
                     </h2>
                     <button
                         onClick={handleAddCert}
-                        className="flex items-center gap-2 text-sm text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors"
+                        className="cursor-pointer flex items-center gap-2 text-sm text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors"
                     >
                         <Plus size={16} /> Add Cert
                     </button>
@@ -274,16 +274,16 @@ const AboutManager = () => {
 
                 <div className="space-y-4">
                     {aboutData.certifications.map((cert, index) => (
-                        <div key={cert.id} className="flex flex-col sm:flex-row gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl group hover:border-primary/30 border border-transparent transition-all">
+                        <div key={cert.id} className="flex flex-col sm:flex-row gap-4 p-4 bg-bg-secondary rounded-xl group hover:border-primary/30 border border-transparent transition-all">
                             {/* Logo Preview */}
                             <div
                                 onClick={() => handleImagePrompt(index, 'logo_url')}
-                                className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 flex items-center justify-center cursor-pointer hover:border-primary overflow-hidden shrink-0 relative group/img"
+                                className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-bg-surface border border-border flex items-center justify-center cursor-pointer hover:border-primary overflow-hidden shrink-0 relative group/img transition-colors"
                             >
                                 {cert.logo_url ? (
                                     <img src={cert.logo_url} alt="Logo" className="w-full h-full object-contain p-2" />
                                 ) : (
-                                    <span className="text-xs text-center text-gray-400">Add Logo</span>
+                                    <span className="text-xs text-center text-text-secondary">Add Logo</span>
                                 )}
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
                                     <span className="text-white text-xs">Edit</span>
@@ -297,14 +297,14 @@ const AboutManager = () => {
                                         value={cert.name}
                                         onChange={e => handleUpdateCert(index, 'name', e.target.value)}
                                         placeholder="Certificate Name"
-                                        className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 text-sm font-bold"
+                                        className="w-full px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-primary text-sm font-bold focus:ring-1 focus:ring-primary focus:border-primary"
                                     />
                                     <input
                                         type="text"
                                         value={cert.issuer}
                                         onChange={e => handleUpdateCert(index, 'issuer', e.target.value)}
                                         placeholder="Issuer"
-                                        className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 text-sm"
+                                        className="w-full px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-primary text-sm focus:ring-1 focus:ring-primary focus:border-primary"
                                     />
                                 </div>
                                 <div className="flex gap-3">
@@ -313,7 +313,7 @@ const AboutManager = () => {
                                         value={cert.date}
                                         onChange={e => handleUpdateCert(index, 'date', e.target.value)}
                                         placeholder="Year/Date"
-                                        className="w-32 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 text-sm text-center"
+                                        className="w-32 px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-primary text-sm text-center focus:ring-1 focus:ring-primary focus:border-primary"
                                     />
                                     <div className="flex-1 flex gap-2">
                                         <input
@@ -321,7 +321,7 @@ const AboutManager = () => {
                                             value={cert.cert_image_url}
                                             onChange={e => handleUpdateCert(index, 'cert_image_url', e.target.value)}
                                             placeholder="Certificate Image/PDF URL (for preview)"
-                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 text-sm font-mono text-gray-500"
+                                            className="w-full px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-secondary font-mono text-sm focus:ring-1 focus:ring-primary focus:border-primary"
                                         />
                                     </div>
                                 </div>
@@ -329,7 +329,7 @@ const AboutManager = () => {
 
                             <button
                                 onClick={() => handleDeleteCert(cert.id)}
-                                className="self-start p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="cursor-pointer self-start p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                                 <Trash2 size={18} />
                             </button>
