@@ -13,6 +13,16 @@ export default async function handler(request) {
     }
 
     try {
+        // Check if Supabase client is available
+        if (!supabasePublic) {
+            console.warn('Supabase client not available - returning empty data');
+            return jsonResponse({
+                success: true,
+                data: [],
+                count: 0
+            });
+        }
+
         // Get query parameters
         const url = new URL(request.url);
         const category = url.searchParams.get('category'); // 'main' or 'other'

@@ -37,7 +37,27 @@ async function apiFetch(endpoint, options = {}) {
         ...options,
         headers,
     });
-    const data = await response.json();
+    
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    let data;
+    
+    if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+    } else {
+        // If not JSON, get text and try to parse as JSON
+        const text = await response.text();
+        try {
+            data = JSON.parse(text);
+        } catch {
+            // If can't parse as JSON, create error object
+            data = { 
+                error: text || 'Unknown error',
+                status: response.status,
+                statusText: response.statusText
+            };
+        }
+    }
 
     if (!response.ok) {
         throw new Error(data.error || 'API request failed');

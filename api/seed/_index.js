@@ -4,7 +4,6 @@ import { handleCors, jsonResponse, errorResponse } from '../_lib/cors.js';
 import {
     projectsData,
     servicesData,
-    contactInfo,
     heroData,
     socialLinksData,
     aboutData,
