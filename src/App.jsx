@@ -54,7 +54,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin" replace />;
+    return <Navigate to="/admin/login" replace />;
   }
 
   return children;
@@ -139,7 +139,7 @@ function App() {
             } />
 
             {/* Admin Routes */}
-            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
 
             {/* Protected Admin Routes */}
             <Route path="/admin" element={
@@ -147,6 +147,7 @@ function App() {
                 <AdminLayout />
               </ProtectedRoute>
             }>
+              <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="hero" element={<HeroManager />} />
               <Route path="about" element={<AboutManager />} />
