@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Lock, AlertCircle, Loader, Mail, Eye, EyeOff } from 'lucide-react';
@@ -88,7 +88,7 @@ const AdminLogin = () => {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 dark:text-white"
+                                    className="form-input pl-12 pr-4 text-gray-900 dark:text-white"
                                     placeholder="admin@example.com"
                                     autoComplete="email"
                                     disabled={isLoggingIn}
@@ -108,8 +108,8 @@ const AdminLogin = () => {
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent text-gray-900 dark:text-white"
-                                    placeholder="••••••••"
+                                    className="form-input pl-12 pr-12 text-gray-900 dark:text-white"
+                                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                                     autoComplete="current-password"
                                     disabled={isLoggingIn}
                                 />
@@ -145,7 +145,7 @@ const AdminLogin = () => {
 
                     <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                         <p className="text-xs text-gray-400 text-center">
-                            🔒 Secured with Supabase Authentication
+                            ðŸ”’ Secured with Supabase Authentication
                         </p>
                     </div>
                 </div>
@@ -155,3 +155,4 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
+

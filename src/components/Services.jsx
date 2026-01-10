@@ -427,13 +427,13 @@ const Services = () => {
               <motion.div
                 key={idx}
                 whileHover={{ y: -5 }}
-                className='p-8 rounded-3xl glass-panel border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/20 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col'
+                className='p-8 rounded-3xl glass-panel border border-border bg-bg-surface hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col'
               >
                 <div className='flex items-center gap-4 mb-6 border-b border-border/50 pb-4'>
                   <div className='w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
                     <service.icon className='w-6 h-6' />
                   </div>
-                  <h3 className='text-xl font-bold whitespace-nowrap'>{service.title}</h3>
+                  <h3 className='text-xl font-bold whitespace-nowrap text-text-primary'>{service.title}</h3>
                 </div>
 
                 <div className="space-y-4 mb-8 flex-grow">
@@ -443,8 +443,8 @@ const Services = () => {
                         <item.icon size={16} />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-sm">{item.name}</h4>
-                        <p className="text-xs text-secondary dark:text-white leading-relaxed font-light">{item.desc}</p>
+                        <h4 className="font-semibold text-sm text-text-primary">{item.name}</h4>
+                        <p className="text-xs text-text-secondary leading-relaxed font-light">{item.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -479,21 +479,21 @@ const Services = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 20 }}
                   onClick={(e) => e.stopPropagation()}
-                  className="relative w-full max-w-7xl max-h-[90vh] bg-bg-primary rounded-3xl border border-white/10 shadow-2xl flex flex-col overflow-hidden"
+                  className="relative w-full max-w-7xl max-h-[90vh] bg-bg-primary rounded-3xl border border-border shadow-2xl flex flex-col overflow-hidden"
                 >
-                  <div className="p-6 border-b border-white/10 flex justify-between items-center bg-black/5 dark:bg-black/20 shrink-0">
+                  <div className="p-6 border-b border-border flex justify-between items-center bg-bg-surface shrink-0">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                         <selectedService.icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold">{selectedService.title}</h3>
-                        <p className="text-sm text-secondary">Service Details & Portfolio</p>
+                        <h3 className="text-2xl font-bold text-text-primary">{selectedService.title}</h3>
+                        <p className="text-sm text-text-secondary">Service Details & Portfolio</p>
                       </div>
                     </div>
                     <button
                       onClick={() => setSelectedService(null)}
-                      className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                      className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-text-secondary hover:text-text-primary"
                     >
                       <X className="w-8 h-8" />
                     </button>
@@ -535,7 +535,7 @@ const Services = () => {
 
                     {/* Service Description */}
                     <section>
-                      <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <h4 className="text-xl font-bold mb-4 flex items-center gap-2 text-primary">
                         <span className="w-1 h-6 bg-primary rounded-full"></span>
                         About this Service
                       </h4>
@@ -552,13 +552,13 @@ const Services = () => {
                       </h4>
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {selectedService.items.map((item, i) => (
-                          <div key={i} className="flex gap-4 p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-black/5 dark:border-white/5 hover:border-primary/30 transition-colors">
+                          <div key={i} className="flex gap-4 p-4 rounded-2xl bg-bg-surface border border-border hover:border-primary/50 transition-colors shadow-sm">
                             <div className="mt-1 text-primary shrink-0">
                               <item.icon className="w-5 h-5" />
                             </div>
                             <div>
-                              <h5 className="font-semibold mb-1">{item.name}</h5>
-                              <p className="text-sm text-secondary dark:text-gray-400">{item.desc}</p>
+                              <h5 className="font-semibold mb-1 text-text-primary">{item.name}</h5>
+                              <p className="text-sm text-text-secondary">{item.desc}</p>
                             </div>
                           </div>
                         ))}
@@ -574,7 +574,7 @@ const Services = () => {
                         </h4>
                         <div className="grid md:grid-cols-3 gap-6">
                           {selectedService.pricing.map((plan, idx) => (
-                            <div key={idx} className={`relative p-6 rounded-3xl border flex flex-col ${idx === 1 ? 'border-primary/50 bg-primary/5 shadow-xl shadow-primary/10' : 'border-black/10 dark:border-white/10 bg-white/50 dark:bg-white/5'}`}>
+                            <div key={idx} className={`relative p-6 rounded-3xl border flex flex-col ${idx === 1 ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10' : 'border-border bg-bg-surface'}`}>
                               {idx === 1 && (
                                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-white text-xs font-bold rounded-full shadow-lg">
                                   MOST POPULAR
@@ -592,9 +592,6 @@ const Services = () => {
                                   </li>
                                 ))}
                               </ul>
-                              <button className={`w-full py-3 rounded-xl font-bold transition-all ${idx === 1 ? 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20'}`}>
-                                Choose Plan
-                              </button>
                             </div>
                           ))}
                         </div>

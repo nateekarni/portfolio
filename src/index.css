@@ -11,6 +11,7 @@
   --color-secondary: var(--color-secondary);
   --color-accent: var(--color-accent);
   --color-border: var(--color-border);
+  --color-bg-surface: var(--color-bg-surface);
 
   --font-sans: 'Google Sans', 'Prompt', system-ui, sans-serif;
   --font-display: 'Google Sans', 'Prompt', system-ui, sans-serif;
@@ -20,44 +21,64 @@
 :root {
   /* Light Mode */
   --light-bg-primary: #ffffff;
-  --light-bg-secondary: #f3f4f6;
+  --light-bg-secondary: #f1f5f9;
+  --light-bg-surface: #ffffff;
   --light-text-primary: #111827;
   --light-text-secondary: #4b5563;
   --light-primary: #0ea5e9;
   --light-secondary: #8b5cf6;
   --light-accent: #f43f5e;
-  --light-border: #9ca3af;
+  --light-border: #94a3b8;
+  --light-glass-border: rgb(0 0 0 / 0.2);
+  --light-input-bg: rgb(255 255 255 / 0.6);
+  --light-input-border: #d1d5db;
+  --light-placeholder: #6b7280;
 
   /* Dark Mode */
   --dark-bg-primary: #030014;
   --dark-bg-secondary: #0f172a;
+  --dark-bg-surface: #1e293b;
   --dark-text-primary: #f8fafc;
   --dark-text-secondary: #94a3b8;
   --dark-primary: #38bdf8;
   --dark-secondary: #a78bfa;
   --dark-accent: #fb7185;
   --dark-border: #1e293b;
+  --dark-glass-border: rgb(255 255 255 / 0.2);
+  --dark-input-bg: rgb(255 255 255 / 0.05);
+  --dark-input-border: rgb(255 255 255 / 0.2);
+  --dark-placeholder: #94a3b8;
 
   /* Default to Dark Mode variables initially */
   --color-bg-primary: var(--dark-bg-primary);
   --color-bg-secondary: var(--dark-bg-secondary);
+  --color-bg-surface: var(--dark-bg-surface);
   --color-text-primary: var(--dark-text-primary);
   --color-text-secondary: var(--dark-text-secondary);
   --color-primary: var(--dark-primary);
   --color-secondary: var(--dark-secondary);
   --color-accent: var(--dark-accent);
   --color-border: var(--dark-border);
+  --color-glass-border: var(--dark-glass-border);
+  --color-input-bg: var(--dark-input-bg);
+  --color-input-border: var(--dark-input-border);
+  --color-placeholder: var(--dark-placeholder);
 }
 
 :root[data-theme='light'] {
   --color-bg-primary: var(--light-bg-primary);
   --color-bg-secondary: var(--light-bg-secondary);
+  --color-bg-surface: var(--light-bg-surface);
   --color-text-primary: var(--light-text-primary);
   --color-text-secondary: var(--light-text-secondary);
   --color-primary: var(--light-primary);
   --color-secondary: var(--light-secondary);
   --color-accent: var(--light-accent);
   --color-border: var(--light-border);
+  --color-glass-border: var(--light-glass-border);
+  --color-input-bg: var(--light-input-bg);
+  --color-input-border: var(--light-input-border);
+  --color-placeholder: var(--light-placeholder);
 }
 
 body {
@@ -74,13 +95,12 @@ html {
 
 @layer utilities {
   .glass-panel {
-    @apply backdrop-blur-md transition-all duration-300 border-[1px] border-solid rounded-2xl;
+    @apply backdrop-blur-md transition-all duration-300 border border-solid rounded-2xl;
   }
 
   /* Explicitly target attribute to ensure visibility in light mode */
   [data-theme='light'] .glass-panel {
-    border-color: rgb(0 0 0 / 0.1);
-    /* black/10 - lighter border */
+    border-color: var(--color-glass-border);
     background-color: rgb(255 255 255 / 0.5);
     --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -95,8 +115,25 @@ html {
 
   [data-theme='dark'] .glass-panel {
     background-color: rgb(255 255 255 / 0.05);
-    border-color: rgb(255 255 255 / 0.1);
+    border-color: var(--color-glass-border);
     box-shadow: none;
+  }
+
+  .form-input {
+    @apply w-full px-4 py-3 rounded-xl transition-colors outline-none border focus:border-primary focus:ring-1 focus:ring-primary bg-transparent;
+    background-color: var(--color-input-bg);
+    border-color: var(--color-input-border);
+    color: var(--color-text-primary);
+  }
+
+  .form-input::placeholder {
+    color: var(--color-placeholder);
+  }
+
+  [data-theme='dark'] .glass-panel:hover {
+    border-color: var(--color-primary);
+    --tw-shadow: 0 4px 6px -1px rgb(56 189 248 / 0.1), 0 2px 4px -2px rgb(56 189 248 / 0.1);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 
   .glass-panel-border {

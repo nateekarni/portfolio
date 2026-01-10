@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { heroAPI } from '../../services/api';
 import IconPicker from '../../components/admin/IconPicker';
 import {
@@ -142,7 +142,7 @@ const HeroManager = () => {
                                 type="text"
                                 value={heroData.greeting}
                                 onChange={e => setHeroData(prev => ({ ...prev, greeting: e.target.value }))}
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                                className="form-input"
                             />
                         </div>
                         <div>
@@ -151,7 +151,7 @@ const HeroManager = () => {
                                 type="text"
                                 value={heroData.name}
                                 onChange={e => setHeroData(prev => ({ ...prev, name: e.target.value }))}
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                                className="form-input"
                             />
                         </div>
                     </div>
@@ -161,7 +161,7 @@ const HeroManager = () => {
                             type="text"
                             value={heroData.role}
                             onChange={e => setHeroData(prev => ({ ...prev, role: e.target.value }))}
-                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                            className="form-input"
                         />
                     </div>
                     <div>
@@ -175,7 +175,7 @@ const HeroManager = () => {
                                 type="text"
                                 value={heroData.status_text}
                                 onChange={e => setHeroData(prev => ({ ...prev, status_text: e.target.value }))}
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                                className="form-input"
                             />
                         </div>
                     </div>
@@ -187,7 +187,7 @@ const HeroManager = () => {
                                     type="text"
                                     value={heroData.hero_image_url || ''}
                                     onChange={e => setHeroData(prev => ({ ...prev, hero_image_url: e.target.value }))}
-                                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 font-mono text-sm text-gray-500"
+                                    className="form-input font-mono text-sm text-gray-500"
                                     placeholder="https://example.com/me.jpg"
                                 />
                                 <p className="text-xs text-gray-400 mt-1">Leave empty to use default image.</p>
@@ -288,3 +288,5 @@ const HeroManager = () => {
 };
 
 export default HeroManager;
+
+

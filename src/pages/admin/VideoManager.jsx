@@ -80,7 +80,7 @@ const VideoManager = () => {
                             type="text"
                             value={videoData.subtitle}
                             onChange={e => setVideoData(prev => ({ ...prev, subtitle: e.target.value }))}
-                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                            className="form-input"
                             placeholder="e.g. My Process"
                         />
                     </div>
@@ -91,7 +91,7 @@ const VideoManager = () => {
                             rows={3}
                             value={videoData.description}
                             onChange={e => setVideoData(prev => ({ ...prev, description: e.target.value }))}
-                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                            className="form-input"
                         />
                     </div>
 
@@ -104,7 +104,7 @@ const VideoManager = () => {
                                     type="text"
                                     value={videoData.video_url}
                                     onChange={e => setVideoData(prev => ({ ...prev, video_url: e.target.value }))}
-                                    className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 font-mono text-sm text-blue-600 dark:text-blue-400"
+                                    className="form-input pl-10 font-mono text-sm text-blue-600 dark:text-blue-400"
                                     placeholder="https://..."
                                 />
                             </div>
@@ -117,7 +117,7 @@ const VideoManager = () => {
                                     type="text"
                                     value={videoData.cover_image_url}
                                     onChange={e => setVideoData(prev => ({ ...prev, cover_image_url: e.target.value }))}
-                                    className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 font-mono text-sm text-blue-600 dark:text-blue-400"
+                                    className="form-input pl-10 font-mono text-sm text-blue-600 dark:text-blue-400"
                                     placeholder="https://..."
                                 />
                             </div>

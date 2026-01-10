@@ -1,7 +1,9 @@
 import './i18n';
+import { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { heroAPI, aboutAPI, servicesAPI, projectsAPI, videoAPI, contactAPI } from './services/api';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -9,8 +11,8 @@ import Services from './components/Services';
 import Projects from './components/Projects';
 import Video from './components/Video';
 import Contact from './components/Contact';
-import Footer from './components/Footer';
 import Background from './components/Background';
+import Loading from './components/Loading';
 import AllProjects from './pages/AllProjects';
 
 // Admin Pages
@@ -25,18 +27,17 @@ import HeroManager from './pages/admin/HeroManager';
 import AboutManager from './pages/admin/AboutManager';
 import VideoManager from './pages/admin/VideoManager';
 
-const Home = () => (
+const Home = ({ initialData }) => (
   <>
     <Navbar />
     <main className="relative z-10 space-y-20 md:space-y-32 pb-20">
-      <Hero />
-      <About />
-      <Services />
-      <Projects />
-      <Video />
-      <Contact />
+      <Hero initialData={initialData.hero} />
+      <About initialData={initialData.about} />
+      <Services initialData={initialData.services} />
+      <Projects initialData={initialData.projects} />
+      <Video initialData={initialData.video} />
+      <Contact initialData={initialData.contact} />
     </main>
-    <Footer />
   </>
 );
 
@@ -60,6 +61,64 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [initialData, setInitialData] = useState({
+    hero: null,
+    about: null,
+    services: null,
+    projects: null,
+    video: null,
+    contact: null
+  });
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        // Fetch all critical data in parallel
+        const [
+          heroResponse,
+          aboutResponse,
+          servicesResponse,
+          projectsResponse,
+          videoResponse,
+          contactResponse
+        ] = await Promise.allSettled([
+          heroAPI.get(),
+          aboutAPI.get(),
+          servicesAPI.getAll(),
+          projectsAPI.getAll({ limit: 6 }),
+          videoAPI.get(),
+          contactAPI.getInfo()
+        ]);
+
+        setInitialData({
+          hero: heroResponse.status === 'fulfilled' ? heroResponse.value.data : null,
+          about: aboutResponse.status === 'fulfilled' ? aboutResponse.value.data : null,
+          services: servicesResponse.status === 'fulfilled' ? servicesResponse.value.data : null,
+          projects: projectsResponse.status === 'fulfilled' ? projectsResponse.value.data : null,
+          video: videoResponse.status === 'fulfilled' ? videoResponse.value.data : null,
+          contact: contactResponse.status === 'fulfilled' ? contactResponse.value.data : null
+        });
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <ThemeProvider>
+        <AuthProvider>
+          <Loading />
+        </AuthProvider>
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider>
       <AuthProvider>
@@ -69,7 +128,7 @@ function App() {
             <Route path="/" element={
               <div className="min-h-screen relative font-display text-base transition-colors duration-500">
                 <Background />
-                <Home />
+                <Home initialData={initialData} />
               </div>
             } />
             <Route path="/projects" element={

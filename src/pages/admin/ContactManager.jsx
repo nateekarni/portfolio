@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { contactItemsAPI } from '../../services/api';
 import IconPicker from '../../components/admin/IconPicker';
 import {
@@ -123,7 +123,7 @@ const ContactManager = () => {
                             type="text"
                             value={configData.title}
                             onChange={(e) => setConfigData(prev => ({ ...prev, title: e.target.value }))}
-                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                            className="form-input"
                         />
                     </div>
                     <div>
@@ -132,7 +132,7 @@ const ContactManager = () => {
                             type="text"
                             value={configData.description}
                             onChange={(e) => setConfigData(prev => ({ ...prev, description: e.target.value }))}
-                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                            className="form-input"
                         />
                     </div>
                 </div>
@@ -240,3 +240,4 @@ const ContactManager = () => {
 };
 
 export default ContactManager;
+

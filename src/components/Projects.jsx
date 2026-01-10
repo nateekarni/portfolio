@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Github, X, ChevronLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { projectsData } from '../data/projects';
 import { projectsAPI } from '../services/api';
+import TechIcon from './TechIcon';
 
 const Projects = () => {
     const { t } = useTranslation();
@@ -46,6 +48,24 @@ const Projects = () => {
     const projects = apiProjects || projectsData;
     const visibleProjects = projects.slice(0, 6);
     const selectedProject = projects.find(p => p.id === selectedId);
+    
+    const [activeImage, setActiveImage] = useState(null);
+
+    useEffect(() => {
+        if (selectedProject) {
+            setActiveImage(selectedProject.image);
+        }
+    }, [selectedProject]);
+
+    // Mock gallery logic - in a real app, projects would have a gallery array
+    // For now, we'll create an array with the main image and some placeholders if no gallery exists
+    const projectGallery = selectedProject?.gallery || 
+        (selectedProject ? [
+            selectedProject.image,
+            // Add fallback/duplicate images for UI demonstration if needed, or just use one
+            // 'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000&auto=format&fit=crop',
+            // 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop'
+        ] : []);
 
     return (
         <section id="projects" className="py-20 relative">
@@ -69,13 +89,12 @@ const Projects = () => {
                     {visibleProjects.map((project) => (
                         <motion.div
                             key={project.id}
-                            layoutId={`card-${project.id}`}
                             onClick={() => setSelectedId(project.id)}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             whileHover={{ y: -8 }}
-                            className="cursor-pointer group rounded-3xl overflow-hidden bg-white dark:bg-white/5 glass-panel hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
+                            className="cursor-pointer group rounded-3xl overflow-hidden bg-bg-surface glass-panel hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
                         >
                             <div className="aspect-video overflow-hidden relative">
                                 <img
@@ -86,30 +105,31 @@ const Projects = () => {
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <span className="px-4 py-2 bg-white/20 backdrop-blur rounded-lg text-white text-sm font-medium">View Details</span>
                                 </div>
-                            </div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div>
-                                        <span className="text-xs font-medium text-primary px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
-                                            {project.category}
-                                        </span>
-                                        <h3 className="text-xl font-bold mt-3 group-hover:text-primary transition-colors text-primary dark:text-white">
-                                            {project.title}
-                                        </h3>
+                                </div>
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div>
+                                            <span className="text-xs font-medium text-primary px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
+                                                {project.category}
+                                            </span>
+                                            <h3 className="text-xl font-bold mt-3 group-hover:text-primary transition-colors text-text-primary">
+                                                {project.title}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <p className="text-text-secondary text-sm mb-4 line-clamp-2">
+                                        {project.desc}
+                                    </p>
+                                    <div className="flex gap-2 flex-wrap">
+                                        {project.tags.map(tag => (
+                                            <span key={tag} className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-md bg-bg-primary/50 text-text-secondary border border-border">
+                                                <TechIcon tag={tag} className="w-3 h-3" />
+                                                {tag}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
-                                <p className="text-secondary dark:text-gray-400 text-sm mb-4 line-clamp-2">
-                                    {project.desc}
-                                </p>
-                                <div className="flex gap-2 flex-wrap">
-                                    {project.tags.map(tag => (
-                                        <span key={tag} className="text-xs px-2 py-1 rounded-md bg-black/5 dark:bg-white/5 text-secondary dark:text-gray-300 border border-black/10 dark:border-white/10">
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
                     ))}
                 </div>
 
@@ -127,87 +147,123 @@ const Projects = () => {
 
                 {/* Modal Logic */}
 
-                <AnimatePresence>
-                    {selectedProject && (
-                        <div
-                            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 md:p-10"
-                            onClick={() => setSelectedId(null)}
-                        >
+                {createPortal(
+                    <AnimatePresence>
+                        {selectedProject && (
                             <motion.div
-
-                                key={selectedProject.id}
-                                layoutId={`card-${selectedProject.id}`}
-                                onClick={(e) => e.stopPropagation()}
-                                className="w-full h-full max-w-6xl bg-bg-primary rounded-3xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 md:p-10"
+                                onClick={() => setSelectedId(null)}
                             >
-                                {/* Left side - Image */}
-                                <div className="md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-black">
-                                    <img
-                                        src={selectedProject.image}
-                                        alt={selectedProject.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent md:bg-gradient-to-r" />
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="relative w-full max-w-5xl max-h-[90vh] bg-bg-primary rounded-3xl border border-border shadow-2xl flex flex-col overflow-hidden"
+                                >
+                                    {/* Header */}
+                                    <div className="p-6 border-b border-border flex justify-between items-center bg-bg-surface shrink-0">
+                                        <div>
+                                            <h3 className="text-2xl font-bold text-text-primary">{selectedProject.title}</h3>
+                                            <p className="text-sm text-text-secondary">{selectedProject.category}</p>
+                                        </div>
+                                        <button
+                                            onClick={() => setSelectedId(null)}
+                                            className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-text-secondary hover:text-text-primary"
+                                        >
+                                            <X className="w-6 h-6" />
+                                        </button>
+                                    </div>
 
-                                    <button
-                                        onClick={() => setSelectedId(null)}
-                                        className="absolute top-6 left-6 md:hidden p-2 rounded-full bg-black/40 text-white backdrop-blur-md"
-                                    >
-                                        <ChevronLeft size={24} />
-                                    </button>
-                                </div>
-
-                                {/* Right side - Content */}
-                                <div className="md:w-1/2 flex flex-col h-full overflow-y-auto relative bg-bg-primary">
-                                    <button
-                                        onClick={() => setSelectedId(null)}
-                                        className="absolute top-6 right-6 hidden md:block p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors z-10"
-                                    >
-                                        <X size={24} />
-                                    </button>
-
-                                    <div className="p-8 md:p-12 flex-1">
-                                        <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 border border-primary/20">
-                                            {selectedProject.category}
-                                        </span>
-
-                                        <h3 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-white">{selectedProject.title}</h3>
-
-                                        <p className="text-secondary dark:text-gray-300 text-lg leading-relaxed mb-8">
-                                            {selectedProject.desc}
-                                        </p>
-
-                                        <div className="mb-8">
-                                            <h4 className="text-sm font-bold uppercase tracking-wider text-secondary mb-4">Technologies</h4>
-                                            <div className="flex flex-wrap gap-2">
-                                                {selectedProject.tags.map(tag => (
-                                                    <span key={tag} className="px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm font-medium">
-                                                        {tag}
-                                                    </span>
-                                                ))}
+                                    {/* Content */}
+                                    <div className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8">
+                                        {/* Image Section with Thumbnails */}
+                                        <div className="flex flex-col md:flex-row gap-6">
+                                            {/* Main Image */}
+                                            <div className="flex-1 aspect-video rounded-2xl overflow-hidden bg-bg-surface relative border border-border shadow-lg">
+                                                <motion.img
+                                                    key={activeImage}
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    transition={{ duration: 0.3 }}
+                                                    src={activeImage || selectedProject.image}
+                                                    alt={selectedProject.title}
+                                                    className="w-full h-full object-cover"
+                                                />
                                             </div>
+
+                                            {/* Thumbnails (Only show if > 1 image, but logic supports 1 too for layout consistency if desired, or skip) */}
+                                            {projectGallery.length > 0 && (
+                                                <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:w-32 md:max-h-[500px] shrink-0 custom-scrollbar pb-2 md:pb-0">
+                                                    {projectGallery.map((img, idx) => (
+                                                        <button
+                                                            key={idx}
+                                                            onClick={() => setActiveImage(img)}
+                                                            className={`relative aspect-video md:aspect-square w-24 md:w-full shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-200 ${activeImage === img ? 'border-primary ring-2 ring-primary/20 scale-95 shadow-md' : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}
+                                                        >
+                                                            <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
 
-                                        <div className="flex flex-col sm:flex-row gap-4 mt-auto pt-8 border-t border-border/50">
+                                        {/* Buttons */}
+                                        <div className="flex flex-wrap gap-4">
                                             <a
                                                 href={selectedProject.demo}
-                                                className="flex-1 px-6 py-4 bg-primary text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="px-6 py-3 bg-primary text-white font-bold rounded-xl flex items-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
                                             >
                                                 <ExternalLink size={20} /> Live Demo
                                             </a>
                                             <a
                                                 href={selectedProject.github}
-                                                className="flex-1 px-6 py-4 border border-border/50 bg-black/5 dark:bg-white/5 rounded-xl flex items-center justify-center gap-2 hover:bg-black/10 dark:hover:bg-white/10 transition-colors font-semibold"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="px-6 py-3 border border-border bg-bg-surface rounded-xl flex items-center gap-2 hover:bg-black/5 dark:hover:bg-white/10 transition-colors font-semibold text-text-primary"
                                             >
                                                 <Github size={20} /> Source Code
                                             </a>
                                         </div>
+
+                                        {/* Description */}
+                                        <div>
+                                            <h4 className="text-xl font-bold mb-4 flex items-center gap-2 text-primary">
+                                                <span className="w-1 h-6 bg-primary rounded-full"></span>
+                                                About this Project
+                                            </h4>
+                                            <p className="text-text-secondary text-lg leading-relaxed">
+                                                {selectedProject.desc}
+                                            </p>
+                                        </div>
+
+                                        {/* Technologies */}
+                                        <div>
+                                            <h4 className="text-xl font-bold mb-4 flex items-center gap-2 text-primary">
+                                                <span className="w-1 h-6 bg-primary rounded-full"></span>
+                                                Technologies
+                                            </h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {selectedProject.tags.map(tag => (
+                                                    <span key={tag} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-surface border border-border text-sm font-medium text-text-primary">
+                                                        <TechIcon tag={tag} className="w-4 h-4" />
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </motion.div>
                             </motion.div>
-                        </div>
-                    )}
-                </AnimatePresence>
+                        )}
+                    </AnimatePresence>,
+                    document.body
+                )}
             </div>
         </section>
     );

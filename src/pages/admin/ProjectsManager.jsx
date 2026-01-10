@@ -230,7 +230,7 @@ const ProjectsManager = () => {
                                         required
                                         value={formData.title}
                                         onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        className="form-input"
                                         placeholder="Project title"
                                     />
                                 </div>
@@ -242,7 +242,7 @@ const ProjectsManager = () => {
                                         type="text"
                                         value={formData.category}
                                         onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        className="form-input"
                                         placeholder="Development, UI/UX Design, etc."
                                     />
                                 </div>
@@ -256,7 +256,7 @@ const ProjectsManager = () => {
                                     type="url"
                                     value={formData.image}
                                     onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    className="form-input"
                                     placeholder="https://example.com/image.jpg"
                                 />
                                 {formData.image && (
@@ -272,7 +272,7 @@ const ProjectsManager = () => {
                                     rows={3}
                                     value={formData.description}
                                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    className="form-input"
                                     placeholder="Project description..."
                                 />
                             </div>
@@ -287,7 +287,7 @@ const ProjectsManager = () => {
                                     value={tagInput}
                                     onChange={(e) => setTagInput(e.target.value)}
                                     onKeyDown={handleAddTag}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    className="form-input"
                                     placeholder="React, Node.js, Tailwind..."
                                 />
                                 <div className="flex flex-wrap gap-2 mt-3">
@@ -319,7 +319,7 @@ const ProjectsManager = () => {
                                         type="url"
                                         value={formData.github_url}
                                         onChange={(e) => setFormData(prev => ({ ...prev, github_url: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        className="form-input"
                                         placeholder="https://github.com/..."
                                     />
                                 </div>
@@ -331,7 +331,7 @@ const ProjectsManager = () => {
                                         type="url"
                                         value={formData.demo_url}
                                         onChange={(e) => setFormData(prev => ({ ...prev, demo_url: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        className="form-input"
                                         placeholder="https://demo.example.com"
                                     />
                                 </div>

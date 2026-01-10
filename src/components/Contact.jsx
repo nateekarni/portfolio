@@ -135,7 +135,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className='w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/20 focus:border-primary focus:outline-none transition-colors'
+                    className='form-input'
                     placeholder='John Doe'
                   />
                 </div>
@@ -147,7 +147,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className='w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/20 focus:border-primary focus:outline-none transition-colors'
+                    className='form-input'
                     placeholder='john@example.com'
                   />
                 </div>
@@ -160,7 +160,7 @@ const Contact = () => {
                   name='subject'
                   value={formData.subject}
                   onChange={handleChange}
-                  className='w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/20 focus:border-primary focus:outline-none transition-colors'
+                  className='form-input'
                   placeholder='Project Inquiry'
                 />
               </div>
@@ -173,7 +173,7 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className='w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/20 focus:border-primary focus:outline-none transition-colors'
+                  className='form-input'
                   placeholder='Tell me about your project...'
                 ></textarea>
               </div>

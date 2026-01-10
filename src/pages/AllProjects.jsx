@@ -4,6 +4,7 @@ import { ExternalLink, Github, X, ChevronLeft, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { projectsData } from '../data/projects';
+import TechIcon from '../components/TechIcon';
 
 const AllProjects = () => {
   const { t } = useTranslation();
@@ -32,10 +33,10 @@ const AllProjects = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-text-primary">
             All <span className="gradient-text">Projects</span>
           </h2>
-          <p className="text-secondary max-w-xl text-lg">
+          <p className="text-text-secondary max-w-xl text-lg">
             A comprehensive list of my work and experiments.
           </p>
         </motion.div>
@@ -50,7 +51,7 @@ const AllProjects = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
                     whileHover={{ y: -8 }}
-                    className="cursor-pointer group rounded-3xl overflow-hidden glass-panel hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
+                    className="cursor-pointer group rounded-3xl overflow-hidden glass-panel bg-bg-surface hover:shadow-xl hover:shadow-primary/5 transition-all outline-none border border-border"
                 >
                 <div className="aspect-video overflow-hidden relative">
                     <img 
@@ -68,17 +69,18 @@ const AllProjects = () => {
                         <span className="text-xs font-medium text-primary px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
                         {project.category}
                         </span>
-                        <h3 className="text-xl font-bold mt-3 group-hover:text-primary transition-colors text-gray-900 dark:text-white">
+                        <h3 className="text-xl font-bold mt-3 group-hover:text-primary transition-colors text-text-primary">
                         {project.title}
                         </h3>
                     </div>
                     </div>
-                    <p className="text-secondary dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                    <p className="text-text-secondary text-sm mb-4 line-clamp-2">
                     {project.desc}
                     </p>
                     <div className="flex gap-2 flex-wrap">
                     {project.tags.map(tag => (
-                        <span key={tag} className="text-xs px-2 py-1 rounded-md bg-black/5 dark:bg-white/5 text-secondary dark:text-gray-300 border border-black/10 dark:border-white/10">
+                        <span key={tag} className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-md bg-bg-secondary text-text-secondary border border-border">
+                        <TechIcon tag={tag} className="w-3 h-3" />
                         {tag}
                         </span>
                     ))}
@@ -99,10 +101,10 @@ const AllProjects = () => {
                   key={selectedProject.id}
                   layoutId={`card-${selectedProject.id}`}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full h-full max-w-6xl bg-bg-primary rounded-3xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row"
+                  className="w-full h-full max-w-6xl bg-bg-primary rounded-3xl border border-border shadow-2xl overflow-hidden flex flex-col md:flex-row"
                 >
                    {/* Left side - Image */}
-                   <div className="md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-black">
+                   <div className="md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-bg-secondary">
                         <img 
                             src={selectedProject.image} 
                             alt={selectedProject.title} 
@@ -122,7 +124,7 @@ const AllProjects = () => {
                     <div className="md:w-1/2 flex flex-col h-full overflow-y-auto relative bg-bg-primary">
                         <button 
                             onClick={() => setSelectedId(null)}
-                            className="absolute top-6 right-6 hidden md:block p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors z-10"
+                            className="absolute top-6 right-6 hidden md:block p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors z-10 text-text-secondary hover:text-text-primary"
                         >
                             <X size={24} />
                         </button>
@@ -132,9 +134,9 @@ const AllProjects = () => {
                                 {selectedProject.category}
                             </span>
                             
-                            <h3 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">{selectedProject.title}</h3>
+                            <h3 className="text-3xl md:text-4xl font-bold mb-4 text-text-primary">{selectedProject.title}</h3>
                             
-                            <p className="text-secondary dark:text-gray-300 text-lg leading-relaxed mb-8">
+                            <p className="text-text-secondary text-lg leading-relaxed mb-8">
                                 {selectedProject.desc}
                             </p>
                             
@@ -142,14 +144,15 @@ const AllProjects = () => {
                                 <h4 className="text-sm font-bold uppercase tracking-wider text-secondary mb-4">Technologies</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedProject.tags.map(tag => (
-                                        <span key={tag} className="px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm font-medium">
+                                        <span key={tag} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-surface border border-border text-text-primary text-sm font-medium">
+                                        <TechIcon tag={tag} className="w-4 h-4" />
                                         {tag}
                                         </span>
                                     ))}
                                 </div>
                             </div>
                             
-                            <div className="flex flex-col sm:flex-row gap-4 mt-auto pt-8 border-t border-border/50">
+                            <div className="flex flex-col sm:flex-row gap-4 mt-auto pt-8 border-t border-border">
                                 <a 
                                     href={selectedProject.demo} 
                                     className="flex-1 px-6 py-4 bg-primary text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
@@ -158,7 +161,7 @@ const AllProjects = () => {
                                 </a>
                                 <a 
                                     href={selectedProject.github} 
-                                    className="flex-1 px-6 py-4 border border-border/50 bg-black/5 dark:bg-white/5 rounded-xl flex items-center justify-center gap-2 hover:bg-black/10 dark:hover:bg-white/10 transition-colors font-semibold"
+                                    className="flex-1 px-6 py-4 border border-border bg-bg-secondary rounded-xl flex items-center justify-center gap-2 hover:bg-black/5 dark:hover:bg-white/10 transition-colors font-semibold text-text-primary"
                                 >
                                     <Github size={20} /> Source Code
                                 </a>

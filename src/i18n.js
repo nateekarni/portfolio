@@ -23,7 +23,8 @@ const resources = {
         status: 'Available for work',
         viewWork: 'View My Work',
         contactMe: 'Contact Me',
-        scrollDown: 'Scroll Down'
+        scrollDown: 'Scroll Down',
+        watchIntro: 'Watch Intro'
       },
       about: {
         title: 'About Me',
@@ -76,7 +77,7 @@ const resources = {
           description: 'I create custom WordPress solutions that are easy to manage and scale, taking care of everything from theme customization to plugin configuration.'
         },
         modal: {
-            whatIncluded: 'What\'s included:',
+            whatIncluded: 'What\'s included',
             pricing: 'Pricing'
         }
       },
@@ -149,7 +150,8 @@ const resources = {
         available: 'พร้อมรับงาน',
         viewWork: 'ดูผลงาน',
         contactMe: 'ติดต่อฉัน',
-        scrollDown: 'เลื่อนลง'
+        scrollDown: 'เลื่อนลง',
+        watchIntro: 'ดูวิดีโอแนะนำตัว'
       },
       about: {
         title: 'เกี่ยวกับฉัน',
@@ -202,7 +204,7 @@ const resources = {
           description: 'รับทำเว็บไซต์ WordPress แบบครบวงจร ตั้งแต่การออกแบบ ปรับแต่งธีม ไปจนถึงการตั้งค่าระบบ เพื่อให้คุณมีเว็บไซต์ที่สวยงามและบริหารจัดการเนื้อหาได้ง่าย'
         },
         modal: {
-            whatIncluded: 'สิ่งที่รวมอยู่ในบริการ:',
+            whatIncluded: 'สิ่งที่รวมอยู่ในบริการ',
             pricing: 'ราคาเริ่มต้น'
         }
       },

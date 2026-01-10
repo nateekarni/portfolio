@@ -1,31 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
-import { heroAPI } from '../services/api';
+import VideoPopup from './VideoPopup';
 
-const Hero = () => {
+const Hero = ({ initialData }) => {
   const { t } = useTranslation();
-  const [heroData, setHeroData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [showVideoPopup, setShowVideoPopup] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await heroAPI.get();
-        setHeroData(res.data);
-      } catch (error) {
-        console.error('Error fetching hero data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) return null; // Or a skeleton loader
+  // Use initialData if provided, otherwise use empty state
+  const heroData = initialData || null;
 
   // Fallback to translation if API data missing or empty strings
   const greeting = heroData?.greeting || t('hero.greeting');
@@ -101,16 +86,19 @@ const Hero = () => {
           >
             <div className='relative w-full aspect-square max-w-md mx-auto'>
               <div className='absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-full blur-3xl animate-pulse'></div>
-              <div className='relative h-full w-full rounded-[2rem] overflow-hidden glass-panel border border-black/5 dark:border-white/10 p-2'>
+              <div className='relative h-full w-full rounded-[2rem] overflow-hidden glass-panel border border-border p-2'>
                 <img
                   src={heroData?.hero_image_url || 'https://images.unsplash.com/photo-1544256306-234edc1c306d?q=80&w=2609&auto=format&fit=crop'}
                   alt='Hero'
                   className='w-full h-full object-cover rounded-[1.5rem] opacity-90'
                 />
 
-                {/* Mini Video Overlay */}
+                {/* Mini Video Overlay - Bottom Right Corner */}
                 {heroData?.hero_video_url && (
-                  <div className="absolute bottom-4 -left-4 w-48 aspect-video rounded-xl overflow-hidden shadow-2xl border-2 border-white/20 z-20 group cursor-pointer hover:scale-105 transition-transform bg-black">
+                  <div 
+                    className="absolute bottom-4 -right-4 w-48 aspect-video rounded-xl overflow-hidden shadow-2xl border-2 border-white/20 z-20 group cursor-pointer hover:scale-105 transition-transform bg-black"
+                    onClick={() => setShowVideoPopup(true)}
+                  >
                     <video
                       src={heroData.hero_video_url}
                       autoPlay
@@ -120,9 +108,12 @@ const Hero = () => {
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors">
-                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
-                        <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-white border-b-[5px] border-b-transparent ml-1"></div>
+                      <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur flex items-center justify-center group-hover:bg-primary/30 transition-colors">
+                        <Play className="w-6 h-6 text-white ml-1" fill="currentColor" />
                       </div>
+                    </div>
+                    <div className="absolute bottom-2 left-2 right-2 bg-black/60 backdrop-blur-sm rounded-lg p-2 text-center">
+                      <p className="text-xs text-white font-medium">{t('hero.watchIntro') || 'Watch Intro'}</p>
                     </div>
                   </div>
                 )}
@@ -132,6 +123,13 @@ const Hero = () => {
 
         </div>
       </div>
+
+      {/* Video Popup */}
+      <VideoPopup 
+        videoUrl={heroData?.hero_video_url || ''}
+        isOpen={showVideoPopup}
+        onClose={() => setShowVideoPopup(false)}
+      />
     </section>
   );
 };

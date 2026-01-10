@@ -1,31 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { X, ExternalLink } from 'lucide-react';
-import { aboutAPI } from '../services/api';
+import { X, ExternalLink, Download } from 'lucide-react';
 
-const About = () => {
+const About = ({ initialData }) => {
   const { t } = useTranslation();
-  const [aboutData, setAboutData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [selectedCert, setSelectedCert] = useState(null);
 
-  useEffect(() => {
-    const fetchAboutData = async () => {
-      try {
-        const res = await aboutAPI.get();
-        setAboutData(res.data);
-      } catch (error) {
-        console.error('Error fetching about data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAboutData();
-  }, []);
-
-  if (loading) return null;
+  // Use initialData if provided, otherwise use empty state
+  const aboutData = initialData || null;
 
   // Fallbacks
   const description1 = aboutData?.description_1 || t('about.description1');
@@ -56,6 +39,18 @@ const About = () => {
             <div className='space-y-6 text-lg leading-relaxed text-secondary'>
               <p>{description1}</p>
               <p>{description2}</p>
+              
+              <div className="pt-4">
+                  <a 
+                    href="/resume.pdf" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                  >
+                    <Download size={20} />
+                    Download CV
+                  </a>
+              </div>
             </div>
 
             <div className='mt-12 grid grid-cols-2 gap-6'>
@@ -82,10 +77,10 @@ const About = () => {
               <ul className="space-y-4">
                 {certifications.map((cert, idx) => (
                   <li key={idx}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-white/50 dark:bg-white/5 border border-black/10 dark:border-white/5 hover:border-primary/30 transition-all cursor-pointer group"
+                    className="flex items-center gap-4 p-4 rounded-xl bg-bg-surface border border-border hover:border-primary/30 transition-all cursor-pointer group"
                     onClick={() => setSelectedCert(cert)}
                   >
-                    <div className="w-12 h-12 rounded-lg bg-white p-2 border border-gray-100 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-lg bg-bg-primary p-2 border border-border flex items-center justify-center shrink-0">
                       {cert.logo_url ? (
                         <img src={cert.logo_url} alt={cert.issuer} className="w-full h-full object-contain" />
                       ) : (
@@ -120,7 +115,7 @@ const About = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-4xl w-full max-h-[90vh] bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-2xl"
+              className="relative max-w-4xl w-full max-h-[90vh] bg-bg-surface rounded-2xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="absolute top-4 right-4 z-10 flex gap-2">
@@ -140,16 +135,16 @@ const About = () => {
                   <X size={20} />
                 </button>
               </div>
-              <div className="p-1 h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+              <div className="p-1 h-full flex items-center justify-center bg-bg-secondary">
                 <img
                   src={selectedCert.cert_image_url}
                   alt={selectedCert.name}
                   className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-lg"
                 />
               </div>
-              <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
-                <h3 className="font-bold text-xl text-gray-900 dark:text-white">{selectedCert.name}</h3>
-                <p className="text-gray-500">{selectedCert.issuer} • {selectedCert.date}</p>
+              <div className="p-4 bg-bg-surface border-t border-border">
+                <h3 className="font-bold text-xl text-text-primary">{selectedCert.name}</h3>
+                <p className="text-text-secondary">{selectedCert.issuer} • {selectedCert.date}</p>
               </div>
             </motion.div>
           </motion.div>

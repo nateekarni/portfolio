@@ -254,7 +254,7 @@ const ServicesManager = () => {
                             type="text"
                             value={configData.title}
                             onChange={(e) => setConfigData(prev => ({ ...prev, title: e.target.value }))}
-                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                            className="form-input"
                         />
                     </div>
                     <div>
@@ -263,7 +263,7 @@ const ServicesManager = () => {
                             type="text"
                             value={configData.description}
                             onChange={(e) => setConfigData(prev => ({ ...prev, description: e.target.value }))}
-                            className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700"
+                            className="form-input"
                         />
                     </div>
                 </div>
@@ -335,7 +335,7 @@ const ServicesManager = () => {
                                             required
                                             value={formData.title}
                                             onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                            className="form-input"
                                             placeholder="Service title"
                                         />
                                     </div>
@@ -370,7 +370,7 @@ const ServicesManager = () => {
                                         rows={3}
                                         value={formData.description}
                                         onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                        className="form-input"
                                         placeholder="Service description..."
                                     />
                                 </div>
@@ -383,7 +383,7 @@ const ServicesManager = () => {
                                         <select
                                             value={formData.category}
                                             onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                            className="form-input"
                                         >
                                             <option value="main">Main Services</option>
                                             <option value="other">Other Services</option>
@@ -397,7 +397,7 @@ const ServicesManager = () => {
                                             type="number"
                                             value={formData.display_order}
                                             onChange={(e) => setFormData(prev => ({ ...prev, display_order: parseInt(e.target.value) || 0 }))}
-                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                            className="form-input"
                                         />
                                     </div>
                                     <div className="flex items-center">
