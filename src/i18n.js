@@ -123,8 +123,15 @@ const resources = {
           availableText: 'I\'m open for freelance projects, full-time positions, and exciting collaborations. Feel free to reach out!',
           responseTime: 'Quick Response Time',
           responseText: 'I typically respond within 24 hours. For urgent matters, please call or message on social media.',
-          average: 'Average response: 12 hours'
-        }
+          average: 'Average response: 12 hours'        },
+        error: {
+          common: {
+            backToHome: 'Back to Home'
+          },
+          unauthorized: {
+            title: 'Access Denied',
+            description: 'Sorry, you do not have permission to access this page. Please contact administration if you believe this is an error.'
+          }        }
       }
     }
   },
@@ -251,6 +258,15 @@ const resources = {
           responseTime: 'เวลาตอบกลับที่รวดเร็ว',
           responseText: 'โดยปกติฉันจะตอบกลับภายใน 24 ชั่วโมง สำหรับเรื่องด่วน กรุณาโทรหรือส่งข้อความผ่านโซเชียลมีเดีย',
           average: 'เวลาตอบกลับเฉลี่ย: 12 ชั่วโมง'
+        },
+        error: {
+          common: {
+            backToHome: 'กลับหน้าหลัก'
+          },
+          unauthorized: {
+            title: 'ไม่มีสิทธิ์เข้าถึง',
+            description: 'ขออภัย คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อผู้ดูแลระบบหากคุณเชื่อว่าเป็นข้อผิดพลาด'
+          }
         }
       }
     }

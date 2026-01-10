@@ -7,6 +7,13 @@ import { supabase } from '../lib/supabase';
 
 const API_BASE = '/api';
 
+// Error handler callback
+let onUnauthorizedCallback = null;
+
+export const setUnauthorizedHandler = (callback) => {
+    onUnauthorizedCallback = callback;
+};
+
 /**
  * Get current Supabase session token
  */
@@ -60,6 +67,10 @@ async function apiFetch(endpoint, options = {}) {
     }
 
     if (!response.ok) {
+        // Handle unauthorized access
+        if ((response.status === 401 || response.status === 403) && onUnauthorizedCallback) {
+            onUnauthorizedCallback(response.status);
+        }
         throw new Error(data.error || 'API request failed');
     }
 
