@@ -142,15 +142,20 @@ export default async function handler(req, res) {
         const webRes = await handler(webReq);
 
         // 4. Send Response
-        res.status(webRes.status);
+        res.statusCode = webRes.status;
         webRes.headers.forEach((val, key) => res.setHeader(key, val));
 
         // Handle body
         const text = await webRes.text();
-        res.send(text);
+        res.end(text);
 
     } catch (error) {
         console.error('API Router Error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({
+            error: 'Internal Server Error',
+            message: error.message
+        }));
     }
 }
