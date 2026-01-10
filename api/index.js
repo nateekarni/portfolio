@@ -82,16 +82,11 @@ const dynamicRoutes = [
     { pattern: /^\/api\/services\/([^/]+)$/, handler: servicesId },
 ];
 
-export const config = {
-    api: {
-        bodyParser: false, // We will handle parsing if needed or let Request handle it? 
-        // Actually, Vercel/Next Node functions usually parse body. 
-        // If we want raw stream for 'new Request(req)', we might want bodyParser: false.
-        // BUT, if we disable it, 'req' is a stream. 'new Request(url, { body: req })' works for streams?
-        // Node ReadableStream -> Web ReadableStream? No directly compatible.
-        // Safer to let Vercel parse, and we re-stringify.
-    }
-};
+// export const config = {
+//     api: {
+//         bodyParser: false,
+//     }
+// };
 
 export default async function handler(req, res) {
     try {
@@ -111,7 +106,10 @@ export default async function handler(req, res) {
         }
 
         if (!handler) {
-            return res.status(404).json({ error: 'Not Found', path: pathname });
+            res.statusCode = 404;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: 'Not Found', path: pathname }));
+            return;
         }
 
         // 2. Adapt Node Request to Web Request
