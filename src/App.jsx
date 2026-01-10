@@ -62,54 +62,6 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [initialData, setInitialData] = useState({
-    hero: null,
-    about: null,
-    services: null,
-    projects: null,
-    video: null,
-    contact: null
-  });
-
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        // Fetch all critical data in parallel
-        const [
-          heroResponse,
-          aboutResponse,
-          servicesResponse,
-          projectsResponse,
-          videoResponse,
-          contactResponse
-        ] = await Promise.allSettled([
-          heroAPI.get(),
-          aboutAPI.get(),
-          servicesAPI.getAll(),
-          projectsAPI.getAll({ limit: 6 }),
-          videoAPI.get(),
-          contactAPI.getInfo()
-        ]);
-
-        setInitialData({
-          hero: heroResponse.status === 'fulfilled' ? heroResponse.value.data : null,
-          about: aboutResponse.status === 'fulfilled' ? aboutResponse.value.data : null,
-          services: servicesResponse.status === 'fulfilled' ? servicesResponse.value.data : null,
-          projects: projectsResponse.status === 'fulfilled' ? projectsResponse.value.data : null,
-          video: videoResponse.status === 'fulfilled' ? videoResponse.value.data : null,
-          contact: contactResponse.status === 'fulfilled' ? contactResponse.value.data : null
-        });
-      } catch (error) {
-        console.error('Error fetching initial data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchInitialData();
-  }, []);
 
 function AppContent({ initialData, isLoading }) {
   const navigate = useNavigate();
