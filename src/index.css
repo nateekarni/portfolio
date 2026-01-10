@@ -1,0 +1,147 @@
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@theme {
+  --color-bg-primary: var(--color-bg-primary);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-border: var(--color-border);
+  
+  --font-sans: 'Google Sans', 'Prompt', system-ui, sans-serif;
+  --font-display: 'Google Sans', 'Prompt', system-ui, sans-serif;
+}
+
+
+:root {
+  /* Light Mode */
+  --light-bg-primary: #ffffff;
+  --light-bg-secondary: #f3f4f6;
+  --light-text-primary: #111827;
+  --light-text-secondary: #4b5563;
+  --light-primary: #0ea5e9;
+  --light-secondary: #8b5cf6;
+  --light-accent: #f43f5e;
+  --light-border: #9ca3af;
+
+  /* Dark Mode */
+  --dark-bg-primary: #030014;
+  --dark-bg-secondary: #0f172a;
+  --dark-text-primary: #f8fafc;
+  --dark-text-secondary: #94a3b8;
+  --dark-primary: #38bdf8;
+  --dark-secondary: #a78bfa;
+  --dark-accent: #fb7185;
+  --dark-border: #1e293b;
+
+  /* Default to Dark Mode variables initially */
+  --color-bg-primary: var(--dark-bg-primary);
+  --color-bg-secondary: var(--dark-bg-secondary);
+  --color-text-primary: var(--dark-text-primary);
+  --color-text-secondary: var(--dark-text-secondary);
+  --color-primary: var(--dark-primary);
+  --color-secondary: var(--dark-secondary);
+  --color-accent: var(--dark-accent);
+  --color-border: var(--dark-border);
+}
+
+:root[data-theme='light'] {
+  --color-bg-primary: var(--light-bg-primary);
+  --color-bg-secondary: var(--light-bg-secondary);
+  --color-text-primary: var(--light-text-primary);
+  --color-text-secondary: var(--light-text-secondary);
+  --color-primary: var(--light-primary);
+  --color-secondary: var(--light-secondary);
+  --color-accent: var(--light-accent);
+  --color-border: var(--light-border);
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-padding-top: 100px;
+  scroll-behavior: smooth;
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply backdrop-blur-md transition-all duration-300 border-[1px] border-solid rounded-2xl;
+  }
+  
+  /* Explicitly target attribute to ensure visibility in light mode */
+  [data-theme='light'] .glass-panel {
+    border-color: rgb(0 0 0 / 0.1); /* black/10 - lighter border */
+    background-color: rgb(255 255 255 / 0.5);
+    --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  [data-theme='light'] .glass-panel:hover {
+     border-color: rgb(125 211 252); /* sky-300 */
+     --tw-shadow: 0 4px 6px -1px rgb(14 165 233 / 0.1), 0 2px 4px -2px rgb(14 165 233 / 0.1);
+     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  [data-theme='dark'] .glass-panel {
+     background-color: rgb(255 255 255 / 0.05);
+     border-color: rgb(255 255 255 / 0.1);
+     box-shadow: none;
+  }
+  
+  .glass-panel-border {
+    @apply border-black/10;
+  }
+
+  /* Custom Scrollbar for Modal and anything that scrolls */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 9999px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-text-secondary);
+  }
+
+  .gradient-text {
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    filter: drop-shadow(0 0 2em rgba(56, 189, 248, 0.3));
+  }
+
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+  
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  
+  .text-primary {
+    color: var(--color-primary);
+  }
+  
+  .border-border {
+    border-color: var(--color-border);
+  }
+}
