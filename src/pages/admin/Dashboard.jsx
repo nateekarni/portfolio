@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { servicesAPI, projectsAPI, contactAPI } from '../../services/api';
+import { supabase } from '../../lib/supabase';
 import {
     Briefcase,
     FolderOpen,
     MessageSquare,
     TrendingUp,
     Eye,
-    AlertCircle
+    AlertCircle,
+    Database,
+    Loader,
+    CheckCircle
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -18,6 +22,45 @@ const Dashboard = () => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [seeding, setSeeding] = useState(false);
+    const [seedResult, setSeedResult] = useState(null);
+
+    const seedDatabase = async () => {
+        if (!confirm('This will seed the database with initial data. Continue?')) return;
+
+        setSeeding(true);
+        setSeedResult(null);
+        setError(null);
+
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+
+            if (!session) {
+                throw new Error('Not authenticated');
+            }
+
+            const response = await fetch('/api/seed', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${session.access_token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to seed database');
+            }
+
+            setSeedResult(result);
+            fetchStats(); // Refresh stats after seeding
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setSeeding(false);
+        }
+    };
 
     useEffect(() => {
         fetchStats();
@@ -164,6 +207,51 @@ const Dashboard = () => {
                         <span className="font-medium">ดู Messages</span>
                     </Link>
                 </div>
+            </div>
+
+            {/* Seed Database Section */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+                            Database Seeding
+                        </h2>
+                        <p className="text-sm text-gray-500">
+                            เพิ่มข้อมูลเริ่มต้น (Projects, Services, Contact) เข้าสู่ Database
+                        </p>
+                    </div>
+                    <button
+                        onClick={seedDatabase}
+                        disabled={seeding}
+                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+                    >
+                        {seeding ? (
+                            <>
+                                <Loader className="w-5 h-5 animate-spin" />
+                                Seeding...
+                            </>
+                        ) : (
+                            <>
+                                <Database size={20} />
+                                Seed Database
+                            </>
+                        )}
+                    </button>
+                </div>
+
+                {seedResult && (
+                    <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+                        <div className="flex items-center gap-2 text-green-700 dark:text-green-400 font-medium mb-2">
+                            <CheckCircle size={20} />
+                            Database seeded successfully!
+                        </div>
+                        <div className="text-sm text-green-600 dark:text-green-500 space-y-1">
+                            <p>• Projects inserted: {seedResult.results?.projects?.inserted || 0}</p>
+                            <p>• Services inserted: {seedResult.results?.services?.inserted || 0}</p>
+                            <p>• Contact info: {seedResult.results?.contact?.success ? 'Updated' : 'Failed'}</p>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Info Box */}
