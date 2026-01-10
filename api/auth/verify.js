@@ -1,8 +1,6 @@
 import { handleCors, jsonResponse } from '../_lib/cors.js';
 
-export const config = {
-    runtime: 'edge',
-};
+
 
 /**
  * This endpoint is deprecated.

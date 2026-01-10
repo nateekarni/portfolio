@@ -14,9 +14,7 @@ import {
     contactItemsData
 } from '../_lib/seedData.js';
 
-export const config = {
-    runtime: 'edge',
-};
+
 
 /**
  * Seed Database API

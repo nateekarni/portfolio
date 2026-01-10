@@ -1,9 +1,7 @@
 import { supabasePublic } from '../_lib/supabase.js';
 import { handleCors, jsonResponse, errorResponse } from '../_lib/cors.js';
 
-export const config = {
-    runtime: 'edge',
-};
+
 
 export default async function handler(request) {
     // Handle CORS preflight
