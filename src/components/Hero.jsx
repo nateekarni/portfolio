@@ -25,8 +25,9 @@ const Hero = ({ initialData }) => {
   // Use initialData if provided, otherwise use empty state
   const heroData = initialData || null;
 
-  // Use dynamic technologies if available, otherwise default
-  const technologies = (heroData?.technologies && heroData.technologies.length > 0) 
+  // Use dynamic technologies from database. 
+  // If database has empty array, use empty array. Only use default if field is missing (null/undefined).
+  const technologies = heroData?.technologies !== undefined && heroData?.technologies !== null
     ? heroData.technologies 
     : defaultTechnologies;
 
