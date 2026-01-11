@@ -94,7 +94,7 @@ const Video = () => {
           className="max-w-5xl mx-auto"
         >
           <div
-            className="relative rounded-3xl overflow-hidden glass-panel border border-black/5 dark:border-white/10 group shadow-2xl"
+            className="relative rounded-3xl overflow-hidden bg-bg-surface border border-border group shadow-2xl"
             onMouseEnter={() => setShowControls(true)}
             onMouseLeave={() => setShowControls(isPlaying ? false : true)}
           >

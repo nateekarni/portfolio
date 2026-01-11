@@ -60,7 +60,8 @@ export default async function handler(request) {
                 role: body.role,
                 status_text: body.status_text,
                 hero_image_url: body.hero_image_url,
-                hero_video_url: body.hero_video_url
+                hero_video_url: body.hero_video_url,
+                technologies: body.technologies
             };
 
             // Upsert hero (always ID 1 or ensure single row)

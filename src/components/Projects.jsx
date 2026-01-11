@@ -94,7 +94,7 @@ const Projects = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             whileHover={{ y: -8 }}
-                            className="cursor-pointer group rounded-3xl overflow-hidden bg-bg-surface glass-panel hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
+                            className="cursor-pointer group rounded-3xl overflow-hidden bg-bg-surface border border-border bg-bg-surface shadow-md hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
                         >
                             <div className="aspect-video overflow-hidden relative">
                                 <img
@@ -123,7 +123,7 @@ const Projects = () => {
                                     <div className="flex gap-2 flex-wrap">
                                         {project.tags.map(tag => (
                                             <span key={tag} className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-md bg-bg-primary/50 text-text-secondary border border-border">
-                                                <TechIcon tag={tag} className="w-3 h-3" />
+                                                <TechIcon name={tag} size={14} className="w-3 h-3" />
                                                 {tag}
                                             </span>
                                         ))}
@@ -154,7 +154,7 @@ const Projects = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 md:p-10"
+                                className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/95 p-4 md:p-10"
                                 onClick={() => setSelectedId(null)}
                             >
                                 <motion.div
@@ -162,7 +162,7 @@ const Projects = () => {
                                     animate={{ opacity: 1, scale: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="relative w-full max-w-5xl max-h-[90vh] bg-bg-primary rounded-3xl border border-border shadow-2xl flex flex-col overflow-hidden"
+                                    className="relative w-full max-w-7xl max-h-[90vh] bg-background rounded-3xl border border-border shadow-2xl flex flex-col overflow-hidden"
                                 >
                                     {/* Header */}
                                     <div className="p-6 border-b border-border flex justify-between items-center bg-bg-surface shrink-0">
@@ -251,7 +251,7 @@ const Projects = () => {
                                             <div className="flex flex-wrap gap-2">
                                                 {selectedProject.tags.map(tag => (
                                                     <span key={tag} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-surface border border-border text-sm font-medium text-text-primary">
-                                                        <TechIcon tag={tag} className="w-4 h-4" />
+                                                        <TechIcon name={tag} size={16} className="w-4 h-4" />
                                                         {tag}
                                                     </span>
                                                 ))}

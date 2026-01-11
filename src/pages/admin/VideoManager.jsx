@@ -127,7 +127,7 @@ const VideoManager = () => {
                     {/* Preview */}
                     <div className="mt-8 border-t border-border pt-8">
                         <label className="block text-sm font-medium mb-4 text-text-secondary">Preview</label>
-                        <div className="relative rounded-3xl overflow-hidden glass-panel border border-border/10 shadow-xl max-w-2xl mx-auto aspect-video bg-black">
+                        <div className="relative rounded-3xl overflow-hidden bg-bg-surface border border-border shadow-xl max-w-2xl mx-auto aspect-video bg-black">
                             <video
                                 src={videoData.video_url}
                                 poster={videoData.cover_image_url}

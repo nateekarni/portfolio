@@ -32,6 +32,7 @@ const HeroManager = () => {
         status_text: '',
         hero_image_url: '',
         hero_video_url: '',
+        technologies: [],
         social_links: []
     });
 
@@ -51,6 +52,25 @@ const HeroManager = () => {
         }
     };
 
+    const handleAddTech = () => {
+        setHeroData(prev => ({
+            ...prev,
+            technologies: [...(prev.technologies || []), "New Tech"]
+        }));
+    };
+
+    const handleUpdateTech = (index, value) => {
+        const newTechs = [...(heroData.technologies || [])];
+        newTechs[index] = value;
+        setHeroData(prev => ({ ...prev, technologies: newTechs }));
+    };
+
+    const handleDeleteTech = (index) => {
+        const newTechs = [...(heroData.technologies || [])];
+        newTechs.splice(index, 1);
+        setHeroData(prev => ({ ...prev, technologies: newTechs }));
+    };
+
     const handleSave = async (e) => {
         e.preventDefault();
         setSaving(true);
@@ -63,7 +83,8 @@ const HeroManager = () => {
                 name: heroData.name,
                 role: heroData.role,
                 status_text: heroData.status_text,
-                hero_image_url: heroData.hero_image_url
+                hero_image_url: heroData.hero_image_url,
+                technologies: heroData.technologies
             });
             setSuccess('Hero section updated successfully!');
         } catch (err) {
@@ -226,6 +247,43 @@ const HeroManager = () => {
                         </button>
                     </div>
                 </form>
+            </div>
+
+            {/* Technologies */}
+            <div className="bg-bg-surface rounded-2xl border border-border p-6">
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold text-text-primary">Marquee Technologies</h2>
+                    <button
+                        onClick={handleAddTech}
+                        className="flex items-center gap-2 text-sm text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                    >
+                        <Plus size={16} /> Add Tech
+                    </button>
+                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {(heroData.technologies || []).map((tech, index) => (
+                        <div key={index} className="flex gap-2 items-center">
+                             <input
+                                type="text"
+                                value={tech}
+                                onChange={(e) => handleUpdateTech(index, e.target.value)}
+                                className="flex-1 px-3 py-2 rounded-lg border border-border bg-bg-surface text-text-primary text-sm outline-none focus:border-primary"
+                                placeholder="Technology Name"
+                            />
+                            <button
+                                onClick={() => handleDeleteTech(index)}
+                                className="p-2 text-text-secondary hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors cursor-pointer"
+                            >
+                                <Trash2 size={18} />
+                            </button>
+                        </div>
+                    ))}
+                    {(!heroData.technologies || heroData.technologies.length === 0) && (
+                        <div className="col-span-full text-center text-text-secondary py-8 border-2 border-dashed border-border rounded-xl">
+                            No technologies added yet. The default list will be used.
+                        </div>
+                    )}
+                 </div>
             </div>
 
             {/* Social Links */}

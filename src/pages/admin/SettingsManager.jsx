@@ -10,7 +10,13 @@ const SettingsManager = () => {
         logo_text: '',
         logo_image_url: '',
         favicon_url: '',
-        meta_keywords: ''
+        meta_keywords: '',
+        show_hero: true,
+        show_about: true,
+        show_services: true,
+        show_projects: true,
+        show_video: true,
+        show_contact: true
     });
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
@@ -23,7 +29,13 @@ const SettingsManager = () => {
                 logo_text: settings.logo_text || '',
                 logo_image_url: settings.logo_image_url || '',
                 favicon_url: settings.favicon_url || '',
-                meta_keywords: settings.meta_keywords || ''
+                meta_keywords: settings.meta_keywords || '',
+                show_hero: settings.show_hero ?? true,
+                show_about: settings.show_about ?? true,
+                show_services: settings.show_services ?? true,
+                show_projects: settings.show_projects ?? true,
+                show_video: settings.show_video ?? true,
+                show_contact: settings.show_contact ?? true
             });
         }
     }, [settings]);
@@ -168,6 +180,32 @@ const SettingsManager = () => {
                                 </div>
                             )}
                         </div>
+                    </div>
+
+                {/* Section Visibility */}
+                <div className="p-6 rounded-2xl bg-bg-surface border border-border shadow-sm">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 rounded-lg bg-purple-500/10 dark:bg-purple-500/20">
+                            <LayoutTemplate className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <h3 className="text-lg font-bold text-text-primary">Section Visibility</h3>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                        {['hero', 'about', 'video', 'services', 'projects', 'contact'].map(section => (
+                            <div key={section} className="flex items-center justify-between p-4 rounded-xl bg-bg-secondary/50 border border-border/50">
+                                <span className="capitalize font-medium text-text-primary">{section} Section</span>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        className="sr-only peer"
+                                        checked={formData[`show_${section}`] ?? true}
+                                        onChange={e => setFormData({...formData, [`show_${section}`]: e.target.checked})}
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none ring-4 ring-transparent peer-focus:ring-primary/20 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                                </label>
+                            </div>
+                        ))}
                     </div>
                 </div>
 

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Terminal, Globe, ChevronDown } from 'lucide-react';
+import { Menu, X, Terminal, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import { useSettings } from '../contexts/SettingsContext';
+import { Button } from './ui/button';
+import { cn } from '../lib/utils';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +27,6 @@ const Navbar = () => {
     { name: t('nav.about'), href: '#about' },
     { name: t('nav.services'), href: '#services' },
     { name: t('nav.projects'), href: '#projects' },
-    { name: t('nav.video'), href: '#video' },
     { name: t('nav.contact'), href: '#contact' },
   ];
 
@@ -39,93 +40,87 @@ const Navbar = () => {
     setLangOpen(false);
   };
 
-  const currentLang = languages.find(lang => lang.code === i18n.language) || languages[0];
-
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      scrolled ? 'backdrop-blur-xl bg-bg-primary/70 border-b border-border' : 'bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <header className={cn(
+      "fixed top-0 z-50 w-full transition-all duration-300 border-b border-transparent",
+      scrolled ? "bg-background/80 backdrop-blur-md border-border/40 supports-[backdrop-filter]:bg-background/60" : "bg-transparent"
+    )}>
+      <div className="container flex h-16 items-center justify-between px-6 md:px-8 max-w-7xl mx-auto">
         
         {/* Logo */}
-        <a href="#home" className="flex items-center gap-2 group">
+        <a href="#home" className="flex items-center gap-2 mr-6">
           {settings?.logo_image_url ? (
-             <img src={settings.logo_image_url} alt="Logo" className="h-10 w-auto object-contain" />
+             <img src={settings.logo_image_url} alt="Logo" className="h-8 w-auto object-contain" />
           ) : (
-            <>
-              <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                <Terminal className="w-6 h-6 text-primary" />
-              </div>
-              <span className="text-xl font-bold tracking-tight">{settings?.logo_text || 'Portfolio'}</span>
-            </>
+            <div className="flex items-center gap-2">
+               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <Terminal className="h-5 w-5" />
+               </div>
+               <span className="text-lg font-bold tracking-tight">{settings?.logo_text || 'Portfolio'}</span>
+            </div>
           )}
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-secondary hover:text-primary transition-colors relative group"
+              className="text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary rounded-full group-hover:w-full transition-all duration-300" />
             </a>
           ))}
-          
-          <div className="h-6 w-px bg-border mx-2" />
+        </nav>
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-
-            {/* Language Switcher */}
-            <div className="relative">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setLangOpen(!langOpen)}
-                className="p-3 rounded-full glass-panel hover:bg-white/10 transition-colors relative overflow-hidden"
+        {/* Actions */}
+        <div className="hidden md:flex items-center gap-4">
+           {/* Language Switch */}
+           <div className="relative">
+              <Button
+                 variant="ghost"
+                 size="icon"
+                 className="h-9 w-9 rounded-full"
+                 onClick={() => setLangOpen(!langOpen)}
               >
-                <Globe className="w-5 h-5 text-primary" />
-              </motion.button>
-              
+                 <Globe className="h-4 w-4" />
+              </Button>
               <AnimatePresence>
                 {langOpen && (
                   <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 mt-2 w-40 glass-panel bg-white dark:bg-gray-900 rounded-xl border border-border overflow-hidden p-1"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="absolute right-0 mt-2 w-32 rounded-md border bg-popover p-1 shadow-md text-popover-foreground z-50"
                   >
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => changeLanguage(lang.code)}
-                        className={`w-full text-left px-4 py-2 rounded-lg text-sm flex items-center justify-between hover:bg-white/5 transition-colors ${
-                          i18n.language === lang.code ? 'text-primary' : 'text-secondary'
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          <img src={lang.flag} alt={lang.label} className="w-5 h-3.5 object-cover rounded-sm" />
-                          <span>{lang.label}</span>
-                        </span>
-                      </button>
-                    ))}
+                     {languages.map((lang) => (
+                        <button
+                           key={lang.code}
+                           onClick={() => changeLanguage(lang.code)}
+                           className={cn(
+                              "relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground",
+                              i18n.language === lang.code && "bg-accent/50"
+                           )}
+                        >
+                           <span className="mr-2 text-base">{lang.code === 'en' ? '🇬🇧' : '🇹🇭'}</span>
+                           {lang.label}
+                        </button>
+                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
-          </div>
-        </div>
+           </div>
 
-        {/* Mobile Menu Toggle */}
-        <button 
-          className="md:hidden p-2 text-secondary hover:text-primary"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X /> : <Menu />}
-        </button>
+           <ThemeToggle />
+        </div>
+        
+        <div className="md:hidden flex items-center gap-2">
+             <ThemeToggle />
+             <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
+                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+             </Button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -135,43 +130,43 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-bg-primary border-b border-border overflow-hidden"
+            className="md:hidden border-b bg-background"
           >
-            <div className="px-6 py-8 space-y-6">
+            <div className="container py-4 space-y-4 px-6 pb-6">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="block text-lg font-medium text-secondary hover:text-primary transition-colors"
+                  className="block text-base font-medium text-foreground hover:text-primary transition-colors"
                 >
                   {link.name}
                 </a>
               ))}
-              <div className="flex items-center gap-4 pt-4 border-t border-border">
-                <ThemeToggle />
-                <div className="flex gap-2">
-                  {languages.map((lang) => (
-                     <button
-                       key={lang.code}
-                        onClick={() => changeLanguage(lang.code)}
-                        className={`px-3 py-1 rounded-full border flex items-center gap-2 ${
-                          i18n.language === lang.code 
-                            ? 'border-primary text-primary bg-primary/10' 
-                            : 'border-border text-secondary'
-                        }`}
-                     >
-                        <img src={lang.flag} alt={lang.label} className="w-5 h-3.5 object-cover rounded-sm" />
-                        <span className="text-sm">{lang.label}</span>
-                     </button>
-                  ))}
-                </div>
+              <div className="flex items-center gap-4 pt-4 mt-4 border-t">
+                  <span className="text-sm font-medium text-muted-foreground mr-auto">Language</span>
+                  <div className="flex gap-2">
+                     {languages.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => changeLanguage(lang.code)}
+                          className={cn(
+                             "px-3 py-1 rounded-md text-xs font-medium border transition-colors",
+                             i18n.language === lang.code 
+                                ? "bg-primary text-primary-foreground border-primary" 
+                                : "bg-transparent text-muted-foreground border-input"
+                          )}
+                        >
+                           {lang.code.toUpperCase()}
+                        </button>
+                     ))}
+                  </div>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 };
 

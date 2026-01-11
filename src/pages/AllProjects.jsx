@@ -51,7 +51,7 @@ const AllProjects = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
                     whileHover={{ y: -8 }}
-                    className="cursor-pointer group rounded-3xl overflow-hidden glass-panel bg-bg-surface hover:shadow-xl hover:shadow-primary/5 transition-all outline-none border border-border"
+                    className="cursor-pointer group rounded-3xl overflow-hidden bg-bg-surface border border-border hover:shadow-xl hover:shadow-primary/5 transition-all outline-none"
                 >
                 <div className="aspect-video overflow-hidden relative">
                     <img 

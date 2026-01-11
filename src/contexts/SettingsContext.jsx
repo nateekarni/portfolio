@@ -10,7 +10,13 @@ export const SettingsProvider = ({ children }) => {
         logo_text: 'Portfolio',
         logo_image_url: null,
         favicon_url: null,
-        meta_keywords: ''
+        meta_keywords: '',
+        show_hero: true,
+        show_about: true,
+        show_services: true,
+        show_projects: true,
+        show_video: true,
+        show_contact: true
     });
     const [loading, setLoading] = useState(true);
 
@@ -18,7 +24,10 @@ export const SettingsProvider = ({ children }) => {
         try {
             const res = await settingsAPI.get();
             if (res.data) {
-                setSettings(res.data);
+                setSettings(prev => ({
+                    ...prev,
+                    ...res.data
+                }));
                 applySettings(res.data);
             }
         } catch (error) {

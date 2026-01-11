@@ -2,6 +2,7 @@ import './i18n';
 import { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { useSettings } from './contexts/SettingsContext';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { heroAPI, aboutAPI, servicesAPI, projectsAPI, videoAPI, contactAPI, setUnauthorizedHandler } from './services/api';
 import Navbar from './components/Navbar';
@@ -30,19 +31,23 @@ import AboutManager from './pages/admin/AboutManager';
 import VideoManager from './pages/admin/VideoManager';
 import SettingsManager from './pages/admin/SettingsManager';
 
-const Home = ({ initialData }) => (
-  <>
-    <Navbar />
-    <main className="relative z-10 pb-20">
-      <Hero initialData={initialData.hero} />
-      <About initialData={initialData.about} />
-      <Services initialData={initialData.services} />
-      <Projects initialData={initialData.projects} />
-      <Video initialData={initialData.video} />
-      <Contact initialData={initialData.contact} />
-    </main>
-  </>
-);
+const Home = ({ initialData }) => {
+  const { settings } = useSettings();
+  
+  return (
+    <>
+      <Navbar />
+      <main className="relative z-10 pb-20">
+        {(settings?.show_hero ?? true) && <Hero initialData={initialData.hero} />}
+        {(settings?.show_about ?? true) && <About initialData={initialData.about} />}
+        {(settings?.show_video ?? true) && <Video initialData={initialData.video} />}
+        {(settings?.show_services ?? true) && <Services initialData={initialData.services} />}
+        {(settings?.show_projects ?? true) && <Projects initialData={initialData.projects} />}
+        {(settings?.show_contact ?? true) && <Contact initialData={initialData.contact} />}
+      </main>
+    </>
+  );
+};
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {

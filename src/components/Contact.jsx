@@ -74,7 +74,7 @@ const Contact = () => {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className='glass-panel p-8 rounded-3xl'
+            className='bg-bg-surface border border-border shadow-lg p-8 rounded-3xl'
           >
             <h2 className='text-4xl md:text-5xl font-bold mb-8'>
               <span className='gradient-text'>{sectionConfig?.title || t('contact.title')}</span>
@@ -109,7 +109,7 @@ const Contact = () => {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className='glass-panel p-8 rounded-3xl'
+            className='bg-bg-surface border border-border shadow-lg p-8 rounded-3xl'
           >
             <form onSubmit={handleSubmit} className='space-y-6'>
               {/* Status Messages */}

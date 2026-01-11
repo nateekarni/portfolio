@@ -10,7 +10,7 @@ const ThemeToggle = () => {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={toggleTheme}
-      className="p-3 rounded-full glass-panel hover:bg-white/10 transition-colors relative overflow-hidden"
+      className="p-3 rounded-full bg-bg-surface border border-border shadow-md hover:bg-bg-secondary transition-colors relative overflow-hidden"
       aria-label="Toggle Theme"
     >
       <motion.div

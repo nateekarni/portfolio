@@ -295,7 +295,7 @@ const Services = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className='p-8 rounded-3xl glass-panel hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col'
+                  className='p-8 rounded-3xl bg-bg-surface border border-border hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col'
                 >
                   <div className='flex items-center gap-4 mb-6 border-b border-border/50 pb-4'>
                     <div className='w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
@@ -349,7 +349,7 @@ const Services = () => {
                     <motion.div
                       key={idx}
                       style={{ minWidth: 'calc(33.333% - 16px)' }}
-                      className='p-8 rounded-3xl glass-panel transition-all group flex flex-col relative'
+                      className='p-8 rounded-3xl bg-bg-surface border border-border transition-all group flex flex-col relative'
                     >
                       <div className='flex items-center gap-4 mb-6 border-b border-border/50 pb-4'>
                         <div className='w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
@@ -394,14 +394,14 @@ const Services = () => {
                   <button
                     onClick={handlePrev}
                     disabled={currentIndex === 0}
-                    className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-bg-primary border border-border hover:bg-primary hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-current transition-all z-10 glass-panel"
+                    className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-bg-primary border border-border hover:bg-primary hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-current transition-all z-10 shadow-md"
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
                   <button
                     onClick={handleNext}
                     disabled={currentIndex === maxIndex}
-                    className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-bg-primary border border-border hover:bg-primary hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-current transition-all z-10 glass-panel"
+                    className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-bg-primary border border-border hover:bg-primary hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-current transition-all z-10 shadow-md"
                   >
                     <ChevronRight className="w-6 h-6" />
                   </button>
@@ -427,7 +427,7 @@ const Services = () => {
               <motion.div
                 key={idx}
                 whileHover={{ y: -5 }}
-                className='p-8 rounded-3xl glass-panel border border-border bg-bg-surface hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col'
+                className='p-8 rounded-3xl border border-border bg-bg-surface hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all group flex flex-col'
               >
                 <div className='flex items-center gap-4 mb-6 border-b border-border/50 pb-4'>
                   <div className='w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform'>
@@ -471,7 +471,7 @@ const Services = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 md:p-10"
+                className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/95 p-4 md:p-10"
                 onClick={() => setSelectedService(null)}
               >
                 <motion.div
@@ -479,7 +479,7 @@ const Services = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: 20 }}
                   onClick={(e) => e.stopPropagation()}
-                  className="relative w-full max-w-7xl max-h-[90vh] bg-bg-primary rounded-3xl border border-border shadow-2xl flex flex-col overflow-hidden"
+                  className="relative w-full max-w-7xl max-h-[90vh] bg-background rounded-3xl border border-border shadow-2xl flex flex-col overflow-hidden"
                 >
                   <div className="p-6 border-b border-border flex justify-between items-center bg-bg-surface shrink-0">
                     <div className="flex items-center gap-4">

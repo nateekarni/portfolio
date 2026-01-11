@@ -26,7 +26,7 @@ const About = ({ initialData }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="p-8 rounded-3xl glass-panel"
+            className="p-8 rounded-3xl bg-bg-surface border border-border shadow-lg"
           >
             <h2 className='text-4xl md:text-5xl font-bold mb-8'>
               <span className='gradient-text'>{aboutData?.title || t('about.title')}</span>
@@ -50,7 +50,7 @@ const About = ({ initialData }) => {
 
             <div className='mt-12 grid grid-cols-2 gap-6'>
               {stats.map((stat, idx) => (
-                <div key={idx} className='p-6 rounded-2xl glass-panel shadow-sm hover:border-primary/30 transition-colors'>
+                <div key={idx} className='p-6 rounded-2xl bg-bg-surface border border-border shadow-sm hover:border-primary/30 transition-colors'>
                   <div className='text-4xl font-bold mb-2 gradient-text'>{stat.value}</div>
                   <div className='text-sm font-medium text-secondary'>{stat.label}</div>
                 </div>
@@ -63,7 +63,7 @@ const About = ({ initialData }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className='p-8 rounded-3xl glass-panel'
+            className='p-8 rounded-3xl bg-bg-surface border border-border shadow-lg'
           >
             <h3 className='text-3xl font-bold mb-6 gradient-text'>Certifications</h3>
             {certifications.length === 0 ? (
@@ -103,7 +103,7 @@ const About = ({ initialData }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/95"
             onClick={() => setSelectedCert(null)}
           >
             <motion.div
