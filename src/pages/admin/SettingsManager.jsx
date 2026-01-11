@@ -181,6 +181,7 @@ const SettingsManager = () => {
                             )}
                         </div>
                     </div>
+                </div>
 
                 {/* Section Visibility */}
                 <div className="p-6 rounded-2xl bg-bg-surface border border-border shadow-sm">
