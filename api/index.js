@@ -46,6 +46,8 @@ import seedIndex from './seed/_index.js';
 // Video
 import videoIndex from './video/_index.js';
 
+import { isAllowedOrigin } from './_lib/cors.js';
+
 // Router Map
 const routes = {
     // Static Routes
@@ -142,6 +144,13 @@ export default async function handler(req, res) {
         // 4. Send Response
         res.statusCode = webRes.status;
         webRes.headers.forEach((val, key) => res.setHeader(key, val));
+
+        // Inject Dynamic CORS Origin for actual responses
+        const origin = req.headers.origin;
+        if (origin && isAllowedOrigin(origin)) {
+             res.setHeader('Access-Control-Allow-Origin', origin);
+             res.setHeader('Access-Control-Allow-Credentials', 'true');
+        }
 
         // Handle body
         const text = await webRes.text();

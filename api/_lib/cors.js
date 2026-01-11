@@ -1,21 +1,43 @@
 /**
  * CORS headers configuration
+ * Note: Access-Control-Allow-Origin is handled dynamically in handleCors and api/index.js
  */
 export const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Credentials': 'true',
 };
 
 /**
+ * Check if origin is allowed
+ */
+export function isAllowedOrigin(origin) {
+    if (!origin) return false;
+    // Allow localhost for development
+    if (origin.match(/^http:\/\/localhost:\d+$/)) return true;
+    // Allow Vercel deployments (subdomains)
+    if (origin.endsWith('.vercel.app')) return true;
+    // Allow Custom Domain (Configured via env if needed)
+    if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) return true;
+    
+    return false;
+}
+
+/**
  * Handle CORS preflight requests
  */
 export function handleCors(request) {
     if (request.method === 'OPTIONS') {
+        const origin = request.headers.get('Origin');
+        const headers = { ...corsHeaders };
+        
+        if (isAllowedOrigin(origin)) {
+            headers['Access-Control-Allow-Origin'] = origin;
+        }
+
         return new Response(null, {
             status: 204,
-            headers: corsHeaders
+            headers
         });
     }
     return null;
