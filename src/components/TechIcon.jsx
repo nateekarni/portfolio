@@ -34,7 +34,6 @@ const iconMap = {
 
 const colorMap = {
     'React': '#61DAFB',
-    'Node.js': '#339933',
     'Stripe': '#008CDD',
     'Figma': '#F24E1E',
     'D3.js': '#F9A03C',
@@ -53,7 +52,6 @@ const colorMap = {
     'PostgreSQL': '#4169E1',
     'Docker': '#2496ED',
     'Git': '#F05032',
-    'Figma': '#F24E1E',
     'TypeScript': '#3178C6',
 };
 

@@ -84,7 +84,7 @@ const HeroManager = () => {
                 role: heroData.role,
                 status_text: heroData.status_text,
                 hero_image_url: heroData.hero_image_url,
-                technologies: heroData.technologies
+                technologies: heroData.technologies || [] // Ensure array is sent even if empty
             });
             setSuccess('Hero section updated successfully!');
         } catch (err) {
@@ -280,7 +280,7 @@ const HeroManager = () => {
                     ))}
                     {(!heroData.technologies || heroData.technologies.length === 0) && (
                         <div className="col-span-full text-center text-text-secondary py-8 border-2 border-dashed border-border rounded-xl">
-                            No technologies added yet. The default list will be used.
+                            No technologies added yet. The default list will be used if the database field is missing.
                         </div>
                     )}
                  </div>

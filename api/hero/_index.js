@@ -14,6 +14,7 @@ export default async function handler(request) {
             const { data: heroData, error: heroError } = await supabasePublic
                 .from('hero_sections')
                 .select('*')
+                .order('id', { ascending: true })
                 .limit(1)
                 .single();
 
@@ -69,6 +70,7 @@ export default async function handler(request) {
             const { data: existing } = await supabaseAdmin
                 .from('hero_sections')
                 .select('id')
+                .order('id', { ascending: true })
                 .limit(1)
                 .single();
 
