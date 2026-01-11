@@ -137,14 +137,14 @@ const Hero = ({ initialData }) => {
             transition={{ duration: 0.8, delay: 0.5, type: 'spring' }}
             className="relative w-full order-last lg:order-none"
           >
-            <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-2 ring-1 ring-black/5 dark:ring-white/5 backdrop-blur-sm lg:rounded-3xl max-w-md mx-auto lg:mx-0 lg:ml-auto">
-              <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-white/10 bg-muted-foreground/10 shadow-2xl">
-                  {heroData?.hero_video_url && showVideoPopup ? (
-                      <VideoPopup 
-                        videoUrl={heroData.hero_video_url} 
-                        onClose={() => setShowVideoPopup(false)} 
-                      />
-                  ) : (
+            {/* Image Container with Theme-Adaptive Glass Effect */}
+            <div className="group relative rounded-2xl p-2 backdrop-blur-md lg:rounded-3xl max-w-md mx-auto lg:mx-0 lg:ml-auto transition-all duration-300 border ring-1 shadow-2xl 
+              border-slate-200 bg-slate-200/50 ring-white/50 shadow-slate-400/20
+              dark:border-white/10 dark:bg-white/5 dark:ring-white/5 dark:shadow-none">
+              
+              <div className="relative aspect-square w-full overflow-hidden rounded-xl border shadow-inner transition-all duration-300
+                border-slate-200 bg-slate-100/50
+                dark:border-white/10 dark:bg-muted-foreground/10">
                     <div className="relative w-full h-full group-hover:scale-[1.01] transition-transform duration-500">
                         <img 
                           src={heroData?.hero_image_url || 'https://images.unsplash.com/photo-1544256306-234edc1c306d'} 
@@ -165,7 +165,6 @@ const Hero = ({ initialData }) => {
                             </div>
                         )}
                     </div>
-                  )}
                   
                   <BorderBeam size={250} duration={12} delay={9} borderWidth={1.5} />
               </div>

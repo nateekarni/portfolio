@@ -95,8 +95,9 @@
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
+    /* Slate-200 for Light Theme Borders */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
   }
@@ -143,7 +144,7 @@
   --light-primary: #0ea5e9;
   --light-secondary: #8b5cf6;
   --light-accent: #f43f5e;
-  --light-border: #94a3b8;
+  --light-border: #e2e8f0;
   --light-glass-border: rgb(0 0 0 / 0.2);
   --light-input-bg: rgb(255 255 255 / 0.6);
   --light-input-border: #d1d5db;
