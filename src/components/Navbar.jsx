@@ -78,32 +78,37 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
            {/* Language Switch */}
            <div className="relative">
-              <Button
-                 variant="ghost"
-                 size="icon"
-                 className="h-9 w-9 rounded-full"
+              <motion.button
+                 whileHover={{ scale: 1.1 }}
+                 whileTap={{ scale: 0.9 }}
                  onClick={() => setLangOpen(!langOpen)}
+                 className="p-3 rounded-full bg-bg-surface border border-border shadow-md hover:bg-bg-secondary transition-colors relative overflow-hidden"
               >
-                 <Globe className="h-4 w-4" />
-              </Button>
+                 <Globe className="w-5 h-5 text-primary" />
+              </motion.button>
+
               <AnimatePresence>
                 {langOpen && (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-32 rounded-md border bg-popover p-1 shadow-md text-popover-foreground z-50"
+                    className="absolute right-0 mt-2 w-36 rounded-2xl border border-border bg-bg-surface p-2 shadow-xl z-50"
                   >
                      {languages.map((lang) => (
                         <button
                            key={lang.code}
                            onClick={() => changeLanguage(lang.code)}
                            className={cn(
-                              "relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground",
-                              i18n.language === lang.code && "bg-accent/50"
+                              "relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all hover:bg-bg-secondary",
+                              i18n.language === lang.code && "bg-primary/10 text-primary"
                            )}
                         >
-                           <span className="mr-2 text-base">{lang.code === 'en' ? '🇬🇧' : '🇹🇭'}</span>
+                           <img 
+                              src={lang.flag} 
+                              alt={lang.label} 
+                              className="w-5 h-5 rounded-full object-cover shadow-sm ring-1 ring-border" 
+                           />
                            {lang.label}
                         </button>
                      ))}
